@@ -1,0 +1,23 @@
+.front-main {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+
+  height: 100vh;
+  
+  background-color: rgb(247, 172, 138);
+}
+.front-video {
+  background-color: rgb(255, 246, 169);
+  width: 100%;
+  max-width: 90%;
+  min-width: 10%;
+  margin: auto;
+  height: inherit;
+}
+.front-btn button {
+  background-color: cornsilk;
+  border-radius: 25px;
+  width: 100px;
+  height: 50px;
+}

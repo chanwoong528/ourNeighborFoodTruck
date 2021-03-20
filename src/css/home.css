@@ -1,0 +1,22 @@
+.home-main {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+
+  height: 100vh;
+
+  background-color: rgb(255, 142, 134);
+}
+
+.home-map-container{
+
+    background-color: rgb(255, 240, 109);
+    width: 90%;
+    margin: 0 auto;
+    height: 80%;
+}
+
+.home-map {
+    margin: auto;
+   
+  }
