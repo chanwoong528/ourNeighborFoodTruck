@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 
 const { kakao } = window;
 function Map() {
+
   useEffect(() => {
     const container = document.getElementById("myMap");
     const options = {
@@ -9,6 +10,10 @@ function Map() {
       level: 4,
     };
     const map = new kakao.maps.Map(container, options);
+
+    // kakao.maps.event.addListener(map, 'click', (event) => {
+    //   alert(event.point instanceof kakao.maps.Point); // true
+    // });
 
     if (navigator.geolocation) {
       // GeoLocation을 이용해서 접속 위치를 얻어옵니다
@@ -30,16 +35,17 @@ function Map() {
 
       displayMarker(locPosition, message);
     }
+
     function displayMarker(locPosition, message) {
       // 마커를 생성합니다
 
-    //  var imageSrc ="../img/personIcon.png" ; // 마커이미지의 주소입니다    
+    //  var imageSrc ="../img/personIcon.png" ; // 마커이미지의 주소입니다
      // var imageSize = new kakao.maps.Size(64, 69); // 마커이미지의 크기입니다
      // var imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-      
-      
+
+
    // var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-      
+
     var marker = new kakao.maps.Marker({
         map: map,
         //image: markerImage,
@@ -49,11 +55,11 @@ function Map() {
       var iwContent = message, // 인포윈도우에 표시할 내용
         iwRemoveable = true;
 
-      // 인포윈도우를 생성합니다 
+      // 인포윈도우를 생성합니다
       var infowindow = new kakao.maps.InfoWindow({
         content: iwContent,
         removable: iwRemoveable,
-      });//여기에다가 푸드트럭 인포 넣으면 될듯 
+      });//여기에다가 푸드트럭 인포 넣으면 될듯
 
       // 인포윈도우를 마커위에 표시합니다
       infowindow.open(map, marker);
@@ -62,6 +68,8 @@ function Map() {
       map.setCenter(locPosition);
     }
   }, []);
+
+
 
   return (
     <div
