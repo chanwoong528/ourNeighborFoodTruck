@@ -1,5 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
+import firebase, { authService } from "../fbase";
+
+import Map from "../components/Map";
+
+
+//디비 create && update
 //점주들을 위한 세팅 관리 
 // 상호 명
 // 전화번호 
@@ -13,8 +20,10 @@ import React from 'react';
 function Profile() {
   return (
     <div className="Profile">
-      Profile
-
+      Profile <h4>{authService.currentUser.email}</h4>
+      
+      <button>Edit Profile</button>
+       <Link to="/home"><button >지도보기</button> </Link>
     </div>
   );
 }

@@ -20,4 +20,9 @@
   border-radius: 25px;
   width: 100px;
   height: 50px;
+  cursor: pointer;
+}
+.front-btn button:hover{
+background-color: white;
+
 }

@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 
 const { kakao } = window;
 function Map() {
+
   useEffect(() => {
     const container = document.getElementById("myMap");
     const options = {
@@ -9,6 +10,10 @@ function Map() {
       level: 4,
     };
     var map = new kakao.maps.Map(container, options);
+
+    // kakao.maps.event.addListener(map, 'click', (event) => {
+    //   alert(event.point instanceof kakao.maps.Point); // true
+    // });
 
     if (navigator.geolocation) {
       // GeoLocation을 이용해서 접속 위치를 얻어옵니다
@@ -63,6 +68,8 @@ function Map() {
       map.setCenter(locPosition);
     }
   }, []);
+
+
 
   return (
     <div
