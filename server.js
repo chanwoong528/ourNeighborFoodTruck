@@ -51,7 +51,7 @@ app.use(express.json());
 app.use('/marker', require('./src/routes/marker'));
 
 // Port setting
-var port = process.env.PORT || 3002;
+var port = process.env.NODE_PORT || 3002;
 server.listen(port, function () {
   console.log('server on! http://localhost:' + port);
 });
