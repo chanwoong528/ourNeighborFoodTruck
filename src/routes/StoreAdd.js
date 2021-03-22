@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import firebase, { authService, dbService } from "../fbase";
 
-import "../css/editprofile.css"
+import "../css/storeadd.css"
 // 상호명 && 음식 업종 && 인스타그램 url
 //  3 field {
 //     NameStore: 찬웅 음식, => 동균 음식
@@ -10,7 +10,7 @@ import "../css/editprofile.css"
 //     AdWeb: www.insta.com/chanFood, input : blank
 //   }
 
-function EditProfile(props) {
+function StoreAdd(props) {
   const [storeName, setStoreName] = useState("");
   const [storeType, setStoreType] = useState("");
   const [adWeb, setAdWeb] = useState("");
@@ -63,4 +63,4 @@ function EditProfile(props) {
     </div>
   );
 }
-export default EditProfile;
+export default StoreAdd;

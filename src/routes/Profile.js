@@ -22,7 +22,7 @@ function Profile(props) {
 
   useEffect(() => {
 
-    dbService.collection("stores").onSnapshot((snapshot) => {
+    dbService.collection("stores").where("userId", "==",props.userObj.uid).onSnapshot((snapshot) => {
       const storeArray = snapshot.docs.map((doc) => ({
         ...doc.data(),
       }));
@@ -38,9 +38,7 @@ function Profile(props) {
       <Link to="/home">
         <button>지도보기</button>
       </Link>
-      <Link to="/profile/edit">
-        <button>점포등록</button>
-      </Link>
+      
 
       {
         <>
