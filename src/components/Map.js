@@ -6,7 +6,7 @@ const { kakao } = window;
 function Map() {
 
   useEffect(() => {
-    
+
     const container = document.getElementById("myMap");
     const options = {
       center: new kakao.maps.LatLng(33.450701, 126.570667), //여기를 바꿔야함 내 장소로
@@ -73,7 +73,7 @@ function Map() {
         position: position,
       });
 
-      addInfoWindow(marker,message);
+      setInfoWindow(marker,message);
 
       map.setCenter(position);
       return marker;
