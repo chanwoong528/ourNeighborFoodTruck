@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import firebase, { authService } from "../fbase";
+import { authService } from "../fbase";
 // register as modal.
 
 function Register() {

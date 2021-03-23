@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import App from "../components/App";
-import firebase, { authService } from "../fbase";
+
+import { authService } from "../fbase";
 import "../css/front.css";
 //홍보 동영상
 //btn 점주라면 로그인!-> auth

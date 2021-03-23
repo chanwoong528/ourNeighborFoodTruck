@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import firebase, { authService, firebaseInstance } from "../fbase";
+import { authService, firebaseInstance } from "../fbase";
 
 import Register from "../components/Register";
 import "../css/auth.css";

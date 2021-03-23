@@ -1,14 +1,13 @@
 //점주 로그인
-import React, { useState } from "react";
+import React from "react";
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import App from "./App";
+
 import Auth from "../routes/Auth";
 import Home from "../routes/Home";
 import Profile from "../routes/Profile";
 import Front from "../routes/Front";
-import StoreAdd from "../routes/StoreAdd";
 import Navigation from "./Navigation";
 // login -> 점주 -> auth-> profile
 // login x -> 일반유저 -> home(지도 내위치 기반 가까운 푸드트럭)
@@ -27,10 +26,6 @@ const AppRouter = (props) => {
         </Route>
         {props.isLoggedIn ? (
           <>
-            <Route exact path="/edit">
-              <StoreAdd userObj={props.userObj} />
-            </Route>
-
             <Route exact path={"/profile" | "/auth"}>
               {/*to rerender profile page when logged*/}
               <Profile userObj={props.userObj} />

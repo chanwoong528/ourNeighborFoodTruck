@@ -5,18 +5,16 @@
 
   height: 100vh;
 
-  background-color: rgb(255, 142, 134);
+  background-color: rgb(247, 172, 138);
 }
 
-.home-map-container{
-
-    background-color: rgb(255, 240, 109);
-    width: 90%;
-    margin: 0 auto;
-    height: 80%;
+.home-map-container {
+  background-color: rgb(255, 240, 109);
+  width: 90%;
+  margin: 0 auto;
+  height: 80%;
 }
 
 .home-map {
-    margin: auto;
-   
-  }
+  margin: auto;
+}
