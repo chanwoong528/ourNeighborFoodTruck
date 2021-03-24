@@ -4,7 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import firebase, { authService, dbService } from "../fbase";
 
 import Store from "../components/Store";
-import Map from "../components/Map";
+import ProfileMap from "../components/ProfileMap";
 import "../css/profile.css";
 //디비 create && update
 //점주들을 위한 세팅 관리
@@ -49,14 +49,19 @@ function Profile(props) {
       <h1> {props.userObj.email}'s Profile</h1>
       {
         stores.length === 0 ? (
-        <button
-          onClick={() => {
-            setStoreAddModal(!storeAddModal);
-          }}
-        >
-          점포 추가
-        </button>
-      ) : null}
+          <button
+            onClick={() => {
+              setStoreAddModal(!storeAddModal);
+            }}
+          >
+            점포 추가
+          </button>
+        ) : 
+          <div className="profile-map-container">
+            <ProfileMap />
+          </div>
+        
+        }
 
       {storeAddModal ? (
         <StoreAddModal
