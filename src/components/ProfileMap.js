@@ -142,19 +142,7 @@ function ProfileMap() {
         lng: lng,
       });
 
-      // dbService.collection("markers").add({
-      //   lat: lat,
-      //   lng: lng,
-      // });
     }
-
-    // function updateMarkerPosDB (marker){
-    //   var lat = marker.getPosition().getLat();
-    //   var lng = marker.getPosition().getLng();
-    //   var uid = authService.currentUser.uid;
-
-
-    // }
 
     async function getMarkerPosFromDB(uid) {
       var docRef = await dbService.collection("markers").doc(uid);
@@ -167,15 +155,14 @@ function ProfileMap() {
         ll = new kakao.maps.LatLng(doc.data().lat, doc.data().lng);
         
       }).catch((error) => {
-        // console.log("error getting cached doc: ", error);
-        // return null;
+        console.log("error getting doc: ", error);
       });
       return ll;
     }
 
-    function changeMarkerPos(marker, pos) {
+    function changeMarkerPos(target_marker, pos) {
       if (pos instanceof kakao.maps.LatLng) {
-        marker.setPosition(pos);
+        target_marker.setPosition(pos);
       } else {
         return;
       }
@@ -211,7 +198,6 @@ function ProfileMap() {
       var pos = latLng;
       changeMarkerPos(marker, pos);
       displayMarker(marker);
-      // return marker;
     }
 
     function removeMarker(marker) {
