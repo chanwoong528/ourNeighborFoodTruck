@@ -1,23 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import { dbService, authService } from "../fbase";
 
 const { kakao } = window;
 
 function ProfileMap() {
-   const checkMarker = async ()=>{
-  let data; 
-   data = await dbService.collection("markers").where("userId", "==", authService.currentUser.uid).onSnapshot((snapshot) => {
-    
-    const markerArray = snapshot.docs.map((doc) => ({
-     
-      id: doc.id,
-      ...doc.data(),
-    }));
-  
-   })
-  }
-  
+  //  const checkMarker = async ()=>{
+  // let data; 
+  //  data = await dbService.collection("markers").where("userId", "==", authService.currentUser.uid).onSnapshot((snapshot) => {
+
+  //   const markerArray = snapshot.docs.map((doc) => ({
+
+  //     id: doc.id,
+  //     ...doc.data(),
+  //   }));
+
+  //  })
+  // }
+
+  const [arr, setArr] = useState([]);
+
   useEffect(() => {
     const container = document.getElementById("pfMap");
     const options = {
@@ -28,14 +30,8 @@ function ProfileMap() {
     var iw = null;
     var cur_marker = null;
     var marker = null;
+    var userId = authService.currentUser.uid;
 
-    if (false) {
-      // if the user has a saved marker position, load it from DB
-      
-     
-    } else {
-      checkMarker(); 
-    }
     if (navigator.geolocation) {
       // GeoLocation을 이용해서 접속 위치를 얻어옵니다
       navigator.geolocation.getCurrentPosition(function (position) {
@@ -45,31 +41,24 @@ function ProfileMap() {
         var locPosition = new kakao.maps.LatLng(lat, lng);
         var message = '<div style="padding:5px;">현재 위치</div>';
         cur_marker = createMarker(locPosition, message);
-        marker = cloneMarker(cur_marker);
-
-        dbService.collection("markers").add({
-          lat: locPosition.getLat(),
-          lng: locPosition.getLng(),
-          userId: authService.currentUser.uid,
-        });
+        // marker = cloneMarker(cur_marker);
+        // addToDB(marker);
 
         displayMarker(cur_marker);
-        console.log("msg = " + message);
+        // console.log("msg = " + message);
       });
     } else {
       var locPosition = new kakao.maps.LatLng(33.450701, 126.570667);
       var message = "위치 정보를 사용할수 없어요..";
       cur_marker = createMarker(locPosition, message);
-      marker = cloneMarker(cur_marker);
-
-      dbService.collection("markers").add({
-        lat: locPosition.getLat(),
-        lng: locPosition.getLng(),
-        userId: authService.currentUser.uid,
-      });
+      // marker = cloneMarker(cur_marker);
+      // addToDB(marker);
 
       displayMarker(cur_marker);
     }
+    // marker = ;
+
+    checkMarkersDB(marker);
 
     // on click
     kakao.maps.event.addListener(map, "click", (mouseEvent) => {
@@ -91,7 +80,7 @@ function ProfileMap() {
           //   userId: authService.currentUser.uid,
           // });
 
-
+          addMarkerPosToDB(marker);
 
           // var new_marker = createMarker(pos, '내 위치');
           displayMarker(marker, "트럭 위치");
@@ -100,6 +89,22 @@ function ProfileMap() {
         // 아니오
       }
     });
+
+    async function checkMarkersDB() {
+      let latLng = await getMarkerPosFromDB(userId);
+      if (latLng) {
+        // if the user has a saved marker position, load it from DB
+        console.log("YES, ", latLng);
+        // let lat = data.lat;
+        // let lng = data.lng;
+        marker = createAndDisplayMarker(latLng, "트럭 위치");
+      } else {
+        // checkMarker(); 
+        console.log("NO");
+        addMarkerPosToDB(marker);
+        marker = cloneMarker(cur_marker);
+      }
+    }
 
     function createMarker(position, message) {
       var marker = new kakao.maps.Marker({
@@ -118,12 +123,54 @@ function ProfileMap() {
       var new_marker = new kakao.maps.Marker({
         // map: null,
         //image: markerImage,
-        position: marker.getPosition(),
+        position: marker ? marker.getPosition() : null,
       });
       removeMarker(new_marker);
       setInfoWindow(new_marker, "트럭 위치");
 
       return new_marker;
+    }
+
+    async function addMarkerPosToDB(marker) {
+      var lat = marker.getPosition().getLat();
+      var lng = marker.getPosition().getLng();
+      var uid = authService.currentUser.uid;
+
+      var markersRef = await dbService.collection("markers");
+      await markersRef.doc(uid).set({
+        lat: lat,
+        lng: lng,
+      });
+
+      // dbService.collection("markers").add({
+      //   lat: lat,
+      //   lng: lng,
+      // });
+    }
+
+    // function updateMarkerPosDB (marker){
+    //   var lat = marker.getPosition().getLat();
+    //   var lng = marker.getPosition().getLng();
+    //   var uid = authService.currentUser.uid;
+
+
+    // }
+
+    async function getMarkerPosFromDB(uid) {
+      var docRef = await dbService.collection("markers").doc(uid);
+      var ll = null;
+      // var getOptions = {
+      //   source: 'cache',
+      // }
+      await docRef.get().then((doc) => {
+        // console.log("cached doc data: ", doc.data());
+        ll = new kakao.maps.LatLng(doc.data().lat, doc.data().lng);
+        
+      }).catch((error) => {
+        // console.log("error getting cached doc: ", error);
+        // return null;
+      });
+      return ll;
     }
 
     function changeMarkerPos(marker, pos) {
@@ -148,7 +195,7 @@ function ProfileMap() {
       );
       kakao.maps.event.addListener(map, "click", makeOutListener(iw));
     }
-    function removeInfoWindow(marker, msg) {}
+    function removeInfoWindow(marker, msg) { }
 
     function displayMarker(target_marker, msg) {
       // var imageSrc ="../img/personIcon.png" ; // 마커이미지의 주소입니다
@@ -158,6 +205,13 @@ function ProfileMap() {
       // var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
       target_marker.setMap(map);
       if (msg) target_marker.getMap().setCenter(target_marker.getPosition());
+    }
+
+    function createAndDisplayMarker(latLng, msg) {
+      var pos = latLng;
+      let new_marker = createMarker(pos, msg);
+      displayMarker(new_marker);
+      return new_marker;
     }
 
     function removeMarker(marker) {
