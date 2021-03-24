@@ -41,7 +41,7 @@ function ProfileMap() {
         var locPosition = new kakao.maps.LatLng(lat, lng);
         var message = '<div style="padding:5px;">현재 위치</div>';
         cur_marker = createMarker(locPosition, message);
-        // marker = cloneMarker(cur_marker);
+        marker = cloneMarker(cur_marker);
         // addToDB(marker);
 
         displayMarker(cur_marker);
@@ -51,14 +51,14 @@ function ProfileMap() {
       var locPosition = new kakao.maps.LatLng(33.450701, 126.570667);
       var message = "위치 정보를 사용할수 없어요..";
       cur_marker = createMarker(locPosition, message);
-      // marker = cloneMarker(cur_marker);
+      marker = cloneMarker(cur_marker);
       // addToDB(marker);
 
       displayMarker(cur_marker);
     }
-    // marker = ;
+    // marker = createMarker(locPosition, "트럭 위치");
 
-    checkMarkersDB(marker);
+    checkMarkersDB();
 
     // on click
     kakao.maps.event.addListener(map, "click", (mouseEvent) => {
@@ -66,7 +66,7 @@ function ProfileMap() {
       console.log(mouseEvent.latLng);
       var pos = mouseEvent.latLng;
       var update = window.confirm("새 위치로 변경할까요?");
-      marker = (marker == null) ? createMarker(pos, "트럭 위치") : marker;
+      // marker = (marker == null) ? createMarker(pos, "트럭 위치") : marker;
       if (update) {
         // 예
         // profile의 상호명 등을 받아와서 갱신
@@ -90,14 +90,14 @@ function ProfileMap() {
       }
     });
 
-    async function checkMarkersDB(marker) {
+    async function checkMarkersDB() {
       let latLng = await getMarkerPosFromDB(userId);
       if (latLng) {
         // if the user has a saved marker position, load it from DB
         console.log("YES, ", latLng);
         // let lat = data.lat;
         // let lng = data.lng;
-        marker = createAndDisplayMarker(latLng, "트럭 위치");
+        updateAndDisplayMarker(marker, latLng, "트럭 위치");
       } else {
         // checkMarker(); 
         console.log("NO");
@@ -207,11 +207,11 @@ function ProfileMap() {
       if (msg) target_marker.getMap().setCenter(target_marker.getPosition());
     }
 
-    function createAndDisplayMarker(latLng, msg) {
+    function updateAndDisplayMarker(marker, latLng, msg) {
       var pos = latLng;
-      let new_marker = createMarker(pos, msg);
-      displayMarker(new_marker);
-      return new_marker;
+      changeMarkerPos(marker, pos);
+      displayMarker(marker);
+      // return marker;
     }
 
     function removeMarker(marker) {
