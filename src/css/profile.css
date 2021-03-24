@@ -5,7 +5,6 @@
   background-color: rgb(247, 172, 138);
   border: solid black 1px;
 }
-<<<<<<< HEAD
 .profile-main button{
   text-align: center;
   margin: auto;
@@ -15,7 +14,6 @@
 .store-add-main{
 
 }
-=======
 
 .profile-map-container {
   background-color: rgb(255, 240, 109);
@@ -27,4 +25,3 @@
 .profile-map {
   margin: auto;
 }
->>>>>>> dev/map

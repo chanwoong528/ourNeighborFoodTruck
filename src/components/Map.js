@@ -40,35 +40,6 @@ function Map() {
       displayMarker(cur_marker);
     }
 
-<<<<<<< HEAD
-
-
-    // on click
-    kakao.maps.event.addListener(map, 'click', (mouseEvent) => {
-      // alert(event.point instanceof kakao.maps.Point); // true
-      console.log(mouseEvent.latLng);
-      var pos = mouseEvent.latLng;
-      var update = window.confirm('새 위치로 변경할까요?');
-      if (update){
-        // 예
-        // profile의 상호명 등을 받아와서 갱신
-        if (pos !== cur_marker.getPosition){
-          // if new pos isn't equal to original pos
-          removeMarker(cur_marker);
-          changeMarkerPos(cur_marker, pos);
-
-          // var new_marker = createMarker(pos, '내 위치');
-          displayMarker(cur_marker, );
-        }
-      } else {
-        // 아니오
-
-      }
-
-    });
-
-=======
->>>>>>> dev/map
     function createMarker(position, message){
       var marker = new kakao.maps.Marker({
         // map: map,
@@ -92,12 +63,6 @@ function Map() {
       kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, iw));
       kakao.maps.event.addListener(map, 'click', makeOutListener(iw));
     }
-<<<<<<< HEAD
-    // function removeInfoWindow(marker,msg){
-
-    // }
-=======
->>>>>>> dev/map
 
     function displayMarker(marker, msg) {
       // var imageSrc ="../img/personIcon.png" ; // 마커이미지의 주소입니다

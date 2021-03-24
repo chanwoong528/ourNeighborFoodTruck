@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import { authService, dbService } from "../fbase";
 
 import Store from "../components/Store";
-<<<<<<< HEAD
-
-=======
 import ProfileMap from "../components/ProfileMap";
->>>>>>> dev/map
 import "../css/profile.css";
 //디비 create && update
 //점주들을 위한 세팅 관리
@@ -23,10 +19,6 @@ function Profile(props) {
   const [stores, setStores] = useState([]);
 
   const [storeAddModal, setStoreAddModal] = useState(false);
- 
-  const handleClose = () => setStoreAddModal(false);
-  const handleShow = () => setStoreAddModal(true);
-
 
   useEffect(() => {
     dbService
@@ -44,35 +36,20 @@ function Profile(props) {
 
   return (
     <div className="profile-main">
-<<<<<<< HEAD
       <h1> {authService.currentUser.email}'s Profile</h1>
       {stores.length === 0 ? (
         <button
           onClick={() => {
-            handleShow();
+            setStoreAddModal(!storeAddModal);
           }}
         >
           점포 추가
         </button>
-      ) : null}
-=======
-      <h1> {props.userObj.email}'s Profile</h1>
-      {
-        stores.length === 0 ? (
-          <button
-            onClick={() => {
-              setStoreAddModal(!storeAddModal);
-            }}
-          >
-            점포 추가
-          </button>
-        ) : 
-          <div className="profile-map-container">
-            <ProfileMap />
-          </div>
-        
-        }
->>>>>>> dev/map
+      ) : (
+        <div className="profile-map-container">
+          <ProfileMap />
+        </div>
+      )}
 
       {storeAddModal ? (
         <StoreAddModal
@@ -100,8 +77,6 @@ function StoreAddModal(props) {
   const [storeType, setStoreType] = useState("");
   const [adWeb, setAdWeb] = useState("");
 
-  
-
   const onSubmitStore = async (e) => {
     e.preventDefault();
     try {
@@ -119,10 +94,9 @@ function StoreAddModal(props) {
   };
 
   return (
-    <div className="store-add-main">
-      <h4>Create Store</h4>
+    <div className ="store-add-main">
       <form onSubmit={onSubmitStore}>
-        <div className ="store-add-input">
+        <div className="store-add-input">
           <input
             onChange={(e) => {
               setStoreName(e.target.value);
@@ -130,7 +104,7 @@ function StoreAddModal(props) {
             placeholder="상호명"
           />
         </div>
-        <div className ="store-add-input">
+        <div className="store-add-input">
           <input
             onChange={(e) => {
               setStoreType(e.target.value);
@@ -138,19 +112,17 @@ function StoreAddModal(props) {
             placeholder="음식카테고리"
           />
         </div>
-        <div className ="store-add-input">
+        <div className="store-add-input">
           <input
             onChange={(e) => {
               setAdWeb(e.target.value);
             }}
             placeholder="인스타url"
           />
-          <div className =
-"store-add-input">
-            <div>
-              <input type="submit" value="등록 " />
-            </div>
-          </div>
+        </div>
+
+        <div className="store-add-input">
+          <input type="submit" value="등록 " />
         </div>
       </form>
     </div>

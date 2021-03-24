@@ -8,7 +8,6 @@ import "../css/auth.css";
 function Auth() {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
-
   const [registerModal, setRegisterModal] = useState(false);
 
   const onSocialLogin = async (e) => {
