@@ -15,6 +15,7 @@ function ProfileMap() {
     var map = new kakao.maps.Map(container, options);
     var iw = null;
     var cur_marker = null;
+    var marker = null;
 
     if (false){
       // if the user has a saved marker position, load it from DB
@@ -29,6 +30,7 @@ function ProfileMap() {
         var locPosition = new kakao.maps.LatLng(lat, lng);
         var message = '<div style="padding:5px;">현재 위치</div>';
         cur_marker = createMarker(locPosition, message);
+        marker = cloneMarker(cur_marker);
         displayMarker(cur_marker);
         console.log('msg = ' + message);
       });
@@ -37,9 +39,11 @@ function ProfileMap() {
       var locPosition = new kakao.maps.LatLng(33.450701, 126.570667);
       var message = "위치 정보를 사용할수 없어요..";
       cur_marker = createMarker(locPosition, message);
+      marker = cloneMarker(cur_marker);
       displayMarker(cur_marker);
     }
 
+    
 
 
     // on click
@@ -51,13 +55,13 @@ function ProfileMap() {
       if (update){
         // 예
         // profile의 상호명 등을 받아와서 갱신
-        if (pos != cur_marker.getPosition){
+        if (pos != marker.getPosition() && pos != cur_marker.getPosition()){
           // if new pos isn't equal to original pos
-          removeMarker(cur_marker);
-          changeMarkerPos(cur_marker, pos);
+          removeMarker(marker);
+          changeMarkerPos(marker, pos);
 
           // var new_marker = createMarker(pos, '내 위치');
-          displayMarker(cur_marker, );
+          displayMarker(marker, '트럭 위치');
         }
       } else {
         // 아니오
@@ -77,6 +81,18 @@ function ProfileMap() {
 
       map.setCenter(position);
       return marker;
+    }
+
+    function cloneMarker (marker){
+      var new_marker = new kakao.maps.Marker({
+        // map: null,
+        //image: markerImage,
+        position: marker.getPosition(),
+      });
+      removeMarker(new_marker);
+      setInfoWindow(new_marker, '트럭 위치');
+
+      return new_marker;
     }
 
     function changeMarkerPos(marker, pos){
@@ -99,15 +115,14 @@ function ProfileMap() {
 
     }
 
-    function displayMarker(marker, msg) {
+    function displayMarker(target_marker, msg) {
       // var imageSrc ="../img/personIcon.png" ; // 마커이미지의 주소입니다
       // var imageSize = new kakao.maps.Size(64, 69); // 마커이미지의 크기입니다
       // var imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
       // var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-      marker.setMap(map);
-      if (msg) marker.
-      map.setCenter(marker.getPosition());
+      target_marker.setMap(map);
+      if (msg) target_marker.getMap().setCenter(target_marker.getPosition());
     }
 
     function removeMarker(marker){
