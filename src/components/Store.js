@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { dbService } from "../fbase";
+import { authService, dbService } from "../fbase";
 
 import Menu from "./Menu";
 
@@ -12,6 +12,18 @@ function Store(props) {
     const ok = window.confirm("Are you sure you want to delete this store?");
     if (ok) {
       await dbService.doc(`stores/${props.store.id}`).delete();
+      await dbService
+        .collection("markers")
+        .doc(authService.currentUser.uid)
+        .delete();
+      let menuDel = await dbService
+        .collection("menus")
+        .where("storeId", "==", props.store.id);
+      menuDel.get().then((querySnapShot) => {
+        querySnapShot.forEach((doc) => {
+          doc.ref.delete();
+        });
+      });
     }
   };
 
@@ -31,7 +43,7 @@ function Store(props) {
         <>
           <h4>{props.store.storeName}</h4>
           <h5>{props.store.storeType}</h5>
-          <h6>{props.store.adWeb/*이거 링크 걸어줄거임*/}</h6>
+          <h6>{props.store.adWeb /*이거 링크 걸어줄거임*/}</h6>
 
           <button>정보 수정</button>
           <button
