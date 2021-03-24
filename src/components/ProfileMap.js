@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
-
+import Axios from 'axios';
 
 const { kakao } = window;
 
-function Map() {
+function ProfileMap() {
 
   useEffect(() => {
 
-    const container = document.getElementById("myMap");
+    const container = document.getElementById("pfMap");
     const options = {
       center: new kakao.maps.LatLng(33.450701, 126.570667), //여기를 바꿔야함 내 장소로
       level: 4,
@@ -27,7 +27,7 @@ function Map() {
           lng = position.coords.longitude; // 경도
 
         var locPosition = new kakao.maps.LatLng(lat, lng);
-        var message = '<div style="padding:5px;">내 위치</div>';
+        var message = '<div style="padding:5px;">현재 위치</div>';
         cur_marker = createMarker(locPosition, message);
         displayMarker(cur_marker);
         console.log('msg = ' + message);
@@ -40,7 +40,6 @@ function Map() {
       displayMarker(cur_marker);
     }
 
-<<<<<<< HEAD
 
 
     // on click
@@ -52,7 +51,7 @@ function Map() {
       if (update){
         // 예
         // profile의 상호명 등을 받아와서 갱신
-        if (pos !== cur_marker.getPosition){
+        if (pos != cur_marker.getPosition){
           // if new pos isn't equal to original pos
           removeMarker(cur_marker);
           changeMarkerPos(cur_marker, pos);
@@ -67,8 +66,6 @@ function Map() {
 
     });
 
-=======
->>>>>>> dev/map
     function createMarker(position, message){
       var marker = new kakao.maps.Marker({
         // map: map,
@@ -82,6 +79,12 @@ function Map() {
       return marker;
     }
 
+    function changeMarkerPos(marker, pos){
+      if (pos instanceof kakao.maps.LatLng){
+        marker.setPosition(pos);
+      } else {return;}
+    }
+
     function setInfoWindow(marker,msg){
       var iwContent = msg;
       var iwRemoveable = true;
@@ -92,12 +95,9 @@ function Map() {
       kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, iw));
       kakao.maps.event.addListener(map, 'click', makeOutListener(iw));
     }
-<<<<<<< HEAD
-    // function removeInfoWindow(marker,msg){
+    function removeInfoWindow(marker,msg){
 
-    // }
-=======
->>>>>>> dev/map
+    }
 
     function displayMarker(marker, msg) {
       // var imageSrc ="../img/personIcon.png" ; // 마커이미지의 주소입니다
@@ -106,7 +106,12 @@ function Map() {
 
       // var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
       marker.setMap(map);
-      if (msg) marker.map.setCenter(marker.getPosition());
+      if (msg) marker.
+      map.setCenter(marker.getPosition());
+    }
+
+    function removeMarker(marker){
+      marker.setMap(null);
     }
 
     function makeOverListener(map, marker, infowindow) {
@@ -120,17 +125,16 @@ function Map() {
         infowindow.close();
       };
     }
-
   }, []);
 
 
 
   return (
     <div
-      className="home-map"
-      id="myMap"
+      className="profile-map"
+      id="pfMap"
       style={{ width: "90%", height: "100%" }}
     ></div>
   );
 }
-export default Map;
+export default ProfileMap;

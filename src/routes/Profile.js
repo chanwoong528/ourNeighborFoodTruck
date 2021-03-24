@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { authService, dbService } from "../fbase";
 
 import Store from "../components/Store";
+<<<<<<< HEAD
 
+=======
+import ProfileMap from "../components/ProfileMap";
+>>>>>>> dev/map
 import "../css/profile.css";
 //디비 create && update
 //점주들을 위한 세팅 관리
@@ -40,6 +44,7 @@ function Profile(props) {
 
   return (
     <div className="profile-main">
+<<<<<<< HEAD
       <h1> {authService.currentUser.email}'s Profile</h1>
       {stores.length === 0 ? (
         <button
@@ -50,6 +55,24 @@ function Profile(props) {
           점포 추가
         </button>
       ) : null}
+=======
+      <h1> {props.userObj.email}'s Profile</h1>
+      {
+        stores.length === 0 ? (
+          <button
+            onClick={() => {
+              setStoreAddModal(!storeAddModal);
+            }}
+          >
+            점포 추가
+          </button>
+        ) : 
+          <div className="profile-map-container">
+            <ProfileMap />
+          </div>
+        
+        }
+>>>>>>> dev/map
 
       {storeAddModal ? (
         <StoreAddModal
