@@ -66,11 +66,11 @@ function ProfileMap() {
       console.log(mouseEvent.latLng);
       var pos = mouseEvent.latLng;
       var update = window.confirm("새 위치로 변경할까요?");
-
+      marker = (marker == null) ? createMarker(pos, "트럭 위치") : marker;
       if (update) {
         // 예
         // profile의 상호명 등을 받아와서 갱신
-        if (pos != marker.getPosition() && pos != cur_marker.getPosition()) {
+        if (marker != null && pos != marker.getPosition() && pos != cur_marker.getPosition()) {
           // if new pos isn't equal to original pos
           removeMarker(marker);
           changeMarkerPos(marker, pos);
@@ -90,7 +90,7 @@ function ProfileMap() {
       }
     });
 
-    async function checkMarkersDB() {
+    async function checkMarkersDB(marker) {
       let latLng = await getMarkerPosFromDB(userId);
       if (latLng) {
         // if the user has a saved marker position, load it from DB
@@ -101,8 +101,8 @@ function ProfileMap() {
       } else {
         // checkMarker(); 
         console.log("NO");
-        addMarkerPosToDB(marker);
         marker = cloneMarker(cur_marker);
+        addMarkerPosToDB(marker);
       }
     }
 
