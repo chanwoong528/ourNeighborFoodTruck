@@ -1,5 +1,16 @@
 .profile-main {
   display: flex;
   flex-direction: column;
+  text-align: center;
   background-color: rgb(247, 172, 138);
+  border: solid black 1px;
+}
+.profile-main button{
+  text-align: center;
+  margin: auto;
+  width: 100px;
+}
+
+.store-add-main{
+
 }

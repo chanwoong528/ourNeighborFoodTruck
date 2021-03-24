@@ -7,7 +7,6 @@ function Store(props) {
   const [menus, setMenus] = useState([]);
 
   const [menuAddModal, setMenuAddModal] = useState(false);
-  
 
   const DeleteStore = async () => {
     const ok = window.confirm("Are you sure you want to delete this store?");
@@ -27,15 +26,12 @@ function Store(props) {
   }, []);
 
   return (
-    <div>
-        
-       
-      
+    <div className="store-main">
       {props.isOwner ? (
-        <h4>
+        <>
           <h4>{props.store.storeName}</h4>
-          <h4>{props.store.storeType}</h4>
-          <h4>{props.store.adWeb}</h4>
+          <h5>{props.store.storeType}</h5>
+          <h6>{props.store.adWeb/*이거 링크 걸어줄거임*/}</h6>
 
           <button>정보 수정</button>
           <button
@@ -61,7 +57,7 @@ function Store(props) {
               isStore={menu.storeId === props.store.id}
             ></Menu>
           ))}
-        </h4>
+        </>
       ) : null}
 
       {menuAddModal ? (
@@ -70,7 +66,6 @@ function Store(props) {
     </div>
   );
 }
-
 
 function MenuAddModal(props) {
   const [menuName, setMenuName] = useState(" ");

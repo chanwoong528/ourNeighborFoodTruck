@@ -26,8 +26,8 @@ const AppRouter = (props) => {
         </Route>
         {props.isLoggedIn ? (
           <>
-            <Route exact path={"/profile" | "/auth"}>
-              {/*to rerender profile page when logged*/}
+            <Route exact path={"/profile"| "/auth"}>
+            
               <Profile userObj={props.userObj} />
             </Route>
           </>

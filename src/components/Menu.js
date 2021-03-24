@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { dbService } from "../fbase";
 // Create db and edit each category
@@ -19,10 +19,10 @@ function Menu(props) {
     }
   };
   return (
-    <div>
+    <div className ="menu-main">
       {props.isStore ? (
         <>
-          <h4>menu</h4>
+          <h2>Menu</h2>
           <h4>{props.menu.menuName}</h4>
           <h4>{props.menu.price}</h4>
           <h4>{props.menu.detail}</h4>
