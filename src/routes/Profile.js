@@ -25,7 +25,7 @@ function Profile(props) {
       .collection("stores")
       .where("userId", "==", authService.currentUser.uid)
       .onSnapshot((snapshot) => {
-        console.log(snapshot);
+        
         const storeArray = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
