@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-
+import { dbService, authService } from "../fbase";
+import marker_red from "../img/marker_red.png";
 
 const { kakao } = window;
 
@@ -13,14 +14,11 @@ function Map() {
       level: 4,
     };
     var map = new kakao.maps.Map(container, options);
+    var markers_id = {};
     var iw = null;
     var cur_marker = null;
 
-    if (false){
-      // if the user has a saved marker position, load it from DB
-      console.log('load marker position from DB');
-    }
-    else if (navigator.geolocation) {
+    if (navigator.geolocation) {
       // GeoLocation을 이용해서 접속 위치를 얻어옵니다
       navigator.geolocation.getCurrentPosition(function (position) {
         var lat = position.coords.latitude, // 위도
@@ -28,20 +26,48 @@ function Map() {
 
         var locPosition = new kakao.maps.LatLng(lat, lng);
         var message = '<div style="padding:5px;">내 위치</div>';
-        cur_marker = createMarker(locPosition, message);
+        cur_marker = createMarker(locPosition, message, marker_red);
         displayMarker(cur_marker);
         console.log('msg = ' + message);
+        map.setCenter(locPosition);
       });
     }
     else {
-      var locPosition = new kakao.maps.LatLng(33.450701, 126.570667);
+      var locPosition = new kakao.maps.LatLng(37.56710356826317, 126.97896911386826);
       var message = "위치 정보를 사용할수 없어요..";
-      cur_marker = createMarker(locPosition, message);
+      cur_marker = createMarker(locPosition, message, marker_red);
       displayMarker(cur_marker);
+      map.setCenter(locPosition);
+    }
+    
+    loadMarkersFromDB();
+    // if (markers != null){
+    //   // if the user has a saved marker position, load it from DB
+    //   console.log('loaded marker position from DB');
+
+    // }
+
+    async function loadMarkersFromDB (){
+      // const snapshot = await dbService.collection("markers").get();
+      // return snapshot.docs.map(doc => doc.data());
+      dbService.collection("markers").onSnapshot((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          let data = doc.data();
+          console.log(doc.id, " => ", data);
+          let lat = data.lat;
+          let lng = doc.data().lng;
+          let pos = new kakao.maps.LatLng(lat,lng);
+          let msg = doc.data().storeName + '<br>' + "content";
+          let new_marker = createMarker(pos, msg);
+          
+          displayMarker(new_marker);
+          
+        });
+      });
     }
 
-    function createMarker(position, message){
-      var marker = new kakao.maps.Marker({
+    function createMarker(position, message, image){
+      let marker = new kakao.maps.Marker({
         // map: map,
         //image: markerImage,
         position: position,
@@ -49,7 +75,13 @@ function Map() {
 
       setInfoWindow(marker,message);
 
-      map.setCenter(position);
+      if (image){
+        let markerImage = new kakao.maps.MarkerImage(
+          image, new kakao.maps.Size(35,35), new kakao.maps.Point(13,34));
+        marker.setImage(markerImage);
+      }
+
+      // map.setCenter(position);
       return marker;
     }
 
@@ -72,6 +104,10 @@ function Map() {
       // var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
       marker.setMap(map);
       if (msg) marker.map.setCenter(marker.getPosition());
+    }
+
+    function removeMarkerByStoreName(storeName){
+      
     }
 
     function makeOverListener(map, marker, infowindow) {
