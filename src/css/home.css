@@ -5,11 +5,11 @@
 
   height: 100vh;
 
-  background-color: rgb(247, 172, 138);
+  background-color: white;
 }
 
 .home-map-container {
-  background-color: rgb(255, 240, 109);
+  background-color:white;
   width: 90%;
   margin: 0 auto;
   height: 80%;

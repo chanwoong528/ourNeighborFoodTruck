@@ -46,13 +46,18 @@ function Auth() {
           }}
           placeholder="비밀번호 입력해주세요"
         />
-        <input className="btn-login" type="submit" value="로그인" />
+        
+        <button className="btn-login" type="submit"> 로그인 </button>
       </form>
       <div className="auth-btn-SNS">
         <button className="btn-google" name="google" onClick={onSocialLogin}>
           구글
         </button>
-        <button className="btn-facebook" name="facebook" onClick={onSocialLogin}>
+        <button
+          className="btn-facebook"
+          name="facebook"
+          onClick={onSocialLogin}
+        >
           페이스북
         </button>
         <button
@@ -63,7 +68,16 @@ function Auth() {
           회원가입
         </button>
       </div>
-      {registerModal ? <Register></Register> : null}
+      {registerModal ? (
+        <Register
+          show={() => setRegisterModal(true)}
+          onHide={() => {
+            setRegisterModal(false);
+          }}
+        >
+          {" "}
+        </Register>
+      ) : null}
     </div>
   );
 }
