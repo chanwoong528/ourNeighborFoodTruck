@@ -66,8 +66,7 @@ function ProfileMap() {
     }).catch((err) => {
       console.log("error: ", err);
     });
-    
-    console.log ("123233333 ", userId, "     ", storeName);
+   
 
     
 
@@ -107,7 +106,7 @@ function ProfileMap() {
         dbService.collection("stores").where("userId", "==", userId)
           .onSnapshot((snapshot) => {
             let temp = snapshot.docs[0].data().storeName;
-            setStoreName(temp);
+            
             console.log ("temp = ", temp);
             if (temp && temp != null){
               resolve(snapshot.docs[0].data().storeName);

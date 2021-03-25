@@ -7,7 +7,7 @@ const { kakao } = window;
 function Map() {
 
   useEffect(() => {
-
+  
     const container = document.getElementById("myMap");
     const options = {
       center: new kakao.maps.LatLng(33.450701, 126.570667), //여기를 바꿔야함 내 장소로
@@ -46,23 +46,28 @@ function Map() {
     //   console.log('loaded marker position from DB');
 
     // }
+   
+    
 
     async function loadMarkersFromDB (){
       // const snapshot = await dbService.collection("markers").get();
       // return snapshot.docs.map(doc => doc.data());
-      dbService.collection("markers").onSnapshot((querySnapshot) => {
+      
+      
+      await dbService.collection("markers").onSnapshot((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           let data = doc.data();
-          console.log(doc.id, " => ", data);
           let lat = data.lat;
           let lng = doc.data().lng;
           let pos = new kakao.maps.LatLng(lat,lng);
           let msg = doc.data().storeName + '<br>' + "content";
           let new_marker = createMarker(pos, msg);
-          
+          console.log(doc.id, " => ", data);
+         
           displayMarker(new_marker);
-          
+         
         });
+        
       });
     }
 
@@ -102,6 +107,7 @@ function Map() {
       // var imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
       // var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+     
       marker.setMap(map);
       if (msg) marker.map.setCenter(marker.getPosition());
     }
