@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { authService, dbService } from "../fbase";
+import { Modal, Button } from "react-bootstrap";
 
 import Menu from "./Menu";
 
@@ -73,7 +74,16 @@ function Store(props) {
       ) : null}
 
       {menuAddModal ? (
-        <MenuAddModal store={props.store} userObj={props.userObj} />
+        <MenuAddModal
+          store={props.store}
+          userObj={props.userObj}
+          show={() => {
+            setMenuAddModal(true);
+          }}
+          onHide={() => {
+            setMenuAddModal(false);
+          }}
+        />
       ) : null}
     </div>
   );
@@ -99,33 +109,54 @@ function MenuAddModal(props) {
   };
 
   return (
-    <div className="menu-add-main">
-      <h4>Menu Add</h4>
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
       <form onSubmit={onSubmitMenu}>
-        <input
-          onChange={(e) => {
-            setMenuName(e.target.value);
-          }}
-          placeholder="메뉴이름"
-        />
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+          <h4>메뉴 추가</h4>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          
+          <div className="menu-add-input">
+            <input
+              onChange={(e) => {
+                setMenuName(e.target.value);
+              }}
+              placeholder="메뉴이름"
+            />
+          </div>
+          <div className="menu-add-input">
+            <input
+              onChange={(e) => {
+                setPrice(e.target.value);
+              }}
+              placeholder="가격"
+            />
+          </div>
+          <div className="menu-add-input">
+            <input
+              onChange={(e) => {
+                setDetail(e.target.value);
+              }}
+              placeholder="detail"
+            />
+          </div>
+        </Modal.Body>
 
-        <input
-          onChange={(e) => {
-            setPrice(e.target.value);
-          }}
-          placeholder="가격"
-        />
-
-        <input
-          onChange={(e) => {
-            setDetail(e.target.value);
-          }}
-          placeholder="detail"
-        />
-
-        <input type="submit" value="등록 " />
+        <Modal.Footer>
+          <button type="submit" class="btn btn-primary">
+            추가
+          </button>
+          <Button onClick={props.onHide}>Close</Button>
+        </Modal.Footer>
       </form>
-    </div>
+    </Modal>
   );
 }
 

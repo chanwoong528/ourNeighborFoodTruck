@@ -16,7 +16,8 @@ import Navigation from "./Navigation";
 const AppRouter = (props) => {
   return (
     <Router>
-      {props.isLoggedIn && <Navigation />}
+      <Navigation isLoggedIn={props.isLoggedIn} />
+     
       <Switch>
         <Route exact path="/">
           <Front isLoggedIn={props.isLoggedIn}></Front>

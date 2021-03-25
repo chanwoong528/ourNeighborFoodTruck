@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import Axios from "axios";
+import React, { useEffect } from "react";
+
 import { dbService, authService } from "../fbase";
 
 const { kakao } = window;
@@ -18,13 +18,13 @@ function ProfileMap() {
   //  })
   // }
 
-  const [arr, setArr] = useState([]);
+ 
 
   useEffect(() => {
     const container = document.getElementById("pfMap");
     const options = {
       center: new kakao.maps.LatLng(33.450701, 126.570667), //여기를 바꿔야함 내 장소로
-      level: 4,
+      level: 7,
     };
     var map = new kakao.maps.Map(container, options);
     var iw = null;
@@ -70,7 +70,7 @@ function ProfileMap() {
       if (update) {
         // 예
         // profile의 상호명 등을 받아와서 갱신
-        if (marker != null && pos != marker.getPosition() && pos != cur_marker.getPosition()) {
+        if (marker !== null && pos !== marker.getPosition() && pos !== cur_marker.getPosition()) {
           // if new pos isn't equal to original pos
           removeMarker(marker);
           changeMarkerPos(marker, pos);

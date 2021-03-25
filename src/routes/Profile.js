@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { authService, dbService } from "../fbase";
+import { Modal, Button } from "react-bootstrap";
 
 import Store from "../components/Store";
 import ProfileMap from "../components/ProfileMap";
@@ -25,7 +26,6 @@ function Profile(props) {
       .collection("stores")
       .where("userId", "==", authService.currentUser.uid)
       .onSnapshot((snapshot) => {
-        
         const storeArray = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -37,24 +37,31 @@ function Profile(props) {
   return (
     <div className="profile-main">
       <h1> {authService.currentUser.email}'s Profile</h1>
+
+      <div className="profile-map-container">
+        <ProfileMap />
+      </div>
+
       {stores.length === 0 ? (
         <button
           onClick={() => {
-            setStoreAddModal(!storeAddModal);
+            setStoreAddModal(true);
           }}
         >
           점포 추가
         </button>
-      ) : (
-        <div className="profile-map-container">
-          <ProfileMap />
-        </div>
-      )}
+      ) : null}
 
       {storeAddModal ? (
         <StoreAddModal
           setStoreAddModal={setStoreAddModal}
           userObj={props.userObj}
+          show={() => {
+            setStoreAddModal(true);
+          }}
+          onHide={() => {
+            setStoreAddModal(false);
+          }}
         />
       ) : null}
       {
@@ -94,38 +101,55 @@ function StoreAddModal(props) {
   };
 
   return (
-    <div className ="store-add-main">
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
       <form onSubmit={onSubmitStore}>
-        <div className="store-add-input">
-          <input
-            onChange={(e) => {
-              setStoreName(e.target.value);
-            }}
-            placeholder="상호명"
-          />
-        </div>
-        <div className="store-add-input">
-          <input
-            onChange={(e) => {
-              setStoreType(e.target.value);
-            }}
-            placeholder="음식카테고리"
-          />
-        </div>
-        <div className="store-add-input">
-          <input
-            onChange={(e) => {
-              setAdWeb(e.target.value);
-            }}
-            placeholder="인스타url"
-          />
-        </div>
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            점포 추가
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="store-add-input">
+            <input
+              onChange={(e) => {
+                setStoreName(e.target.value);
+              }}
+              placeholder="상호명"
+            />
+          </div>
+          <div className="store-add-input">
+            <input
+              onChange={(e) => {
+                setStoreType(e.target.value);
+              }}
+              placeholder="음식카테고리"
+            />
+          </div>
 
-        <div className="store-add-input">
-          <input type="submit" value="등록 " />
-        </div>
+          <div className="store-add-input">
+            <input
+              onChange={(e) => {
+                setAdWeb(e.target.value);
+              }}
+              placeholder="인스타url"
+            />
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <div className="store-add-input">
+            <button type="submit" class="btn btn-primary">
+              점포 등록
+            </button>
+          </div>
+          <Button onClick={props.onHide}>Close</Button>
+        </Modal.Footer>
       </form>
-    </div>
+    </Modal>
   );
 }
 

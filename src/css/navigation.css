@@ -1,8 +1,0 @@
-.nav-main ul{
-    display: flex;
-    list-style-type: none;
-    justify-content: center;
-}
-.nav-main li{
-    margin-right: 10px;
-}
