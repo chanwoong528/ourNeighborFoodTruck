@@ -33,7 +33,7 @@ function ProfileMap() {
     var store_name = null;
     init().then((data) => {
       console.log("value: ", data);
-      store_name = data;
+      
       if (navigator.geolocation) {
         // GeoLocation을 이용해서 접속 위치를 얻어옵니다
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -107,6 +107,7 @@ function ProfileMap() {
               let temp = snapshot.docs[0].data().storeName;
               console.log("temp = ", temp);
               if (temp && temp != null) {
+                store_name =snapshot.docs[0].data().storeName ;
                 resolve(snapshot.docs[0].data().storeName);
               }
             } else {
