@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { dbService, authService } from "../fbase";
 import marker_red from "../img/marker_red.png";
 
 const { kakao } = window;
 
 function Map() {
-
+  const [iwMsg, setIwMsg] = useState("");
   useEffect(() => {
   
     const container = document.getElementById("myMap");
@@ -79,7 +79,8 @@ function Map() {
           let lat = data.lat;
           let lng = data.lng;
           let pos = new kakao.maps.LatLng(lat, lng);
-          let msg = data.storeName + '<br>' + "content";
+          let msg = data.storeName+'<br>'+data.storeType+'<br>'+'<a href='+data.adWeb+'>' +"123"+'</a> ';
+          setIwMsg(msg);
          // console.log ("update/markers = ", markers);
          // console.log ("update/doc.id = ", doc.id);
          // console.log ("update/markers[uid] = ", markers[doc.id]);
@@ -123,7 +124,7 @@ function Map() {
       if (target_marker && target_marker != null){
         target_marker.setPosition(pos);
         if(iws[target_marker.id]){
-          iws[target_marker.id].setContent(msg)
+          iws[target_marker.id].setContent(iwMsg); 
         }else{
 
         }
