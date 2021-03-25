@@ -17,8 +17,8 @@ function ProfileMap() {
   //   }));
 
   //  })
-  // }
 
+  
   useEffect(() => {
     const container = document.getElementById("pfMap");
     const options = {
@@ -33,7 +33,7 @@ function ProfileMap() {
     var store_name = null;
     init().then((data) => {
       console.log("value: ", data);
-      // store_name = data;
+      
       if (navigator.geolocation) {
         // GeoLocation을 이용해서 접속 위치를 얻어옵니다
         navigator.geolocation.getCurrentPosition(function (position) {

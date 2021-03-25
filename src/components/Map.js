@@ -7,7 +7,7 @@ const { kakao } = window;
 function Map() {
 
   useEffect(() => {
-
+  
     const container = document.getElementById("myMap");
     const options = {
       center: new kakao.maps.LatLng(33.450701, 126.570667), //여기를 바꿔야함 내 장소로
@@ -15,6 +15,7 @@ function Map() {
     };
     var map = new kakao.maps.Map(container, options);
     var markers = {};
+    var iws= {};
     var iw = null;
     var cur_marker = null;
     var userId = null;
@@ -52,6 +53,8 @@ function Map() {
     //   console.log('loaded marker position from DB');
 
     // }
+   
+    
 
     function init() {
       return new Promise((resolve, reject) => {
@@ -68,19 +71,20 @@ function Map() {
     async function loadMarkersFromDB() {
       // const snapshot = await dbService.collection("markers").get();
       // return snapshot.docs.map(doc => doc.data());
-      dbService.collection("markers").onSnapshot((querySnapshot) => {
+      
+      
+      await dbService.collection("markers").onSnapshot((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           let data = doc.data();
-          console.log(doc.id, " => ", data);
           let lat = data.lat;
           let lng = data.lng;
           let pos = new kakao.maps.LatLng(lat, lng);
           let msg = data.storeName + '<br>' + "content";
-          console.log ("update/markers = ", markers);
-          console.log ("update/doc.id = ", doc.id);
-          console.log ("update/markers[uid] = ", markers[doc.id]);
+         // console.log ("update/markers = ", markers);
+         // console.log ("update/doc.id = ", doc.id);
+         // console.log ("update/markers[uid] = ", markers[doc.id]);
           if (markers[doc.id]){
-            console.log ("update/markers[uid] = ", markers[doc.id]);
+            //console.log ("update/markers[uid] = ", markers[doc.id]);
             updateMarker(markers[doc.id], pos, msg);
           } else {
             let new_marker = createMarker(pos, msg);
@@ -88,6 +92,7 @@ function Map() {
             displayMarker(new_marker);
           }
         });
+        
       });
     }
 
@@ -117,7 +122,13 @@ function Map() {
     function updateMarker(target_marker, pos, msg){
       if (target_marker && target_marker != null){
         target_marker.setPosition(pos);
+        if(iws[target_marker.id]){
+          iws[target_marker.id].setContent(msg)
+        }else{
+
+        }
       }
+      
 
     }
 
@@ -128,6 +139,12 @@ function Map() {
         content: iwContent,
         removable: iwRemoveable,
       });
+      iws[marker.id]= iw; 
+      
+      
+      
+
+
       kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, iw));
       kakao.maps.event.addListener(map, 'click', makeOutListener(iw));
     }
@@ -138,6 +155,7 @@ function Map() {
       // var imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
       // var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+     
       marker.setMap(map);
       if (msg) marker.map.setCenter(marker.getPosition());
     }
