@@ -29,10 +29,14 @@ function ProfileMap() {
     var iw = null;
     var cur_marker = null;
     var marker = null;
+    
     var userId = null;
     var store_name = null;
+    var ad_web = null; 
+    var store_type = null; 
+    
     init().then((data) => {
-      console.log("value: ", data);
+      console.log("value: ", data.storeName, "1231", data.adWeb);
       
       if (navigator.geolocation) {
         // GeoLocation을 이용해서 접속 위치를 얻어옵니다
@@ -56,7 +60,7 @@ function ProfileMap() {
         cur_marker = createMarker(locPosition, message, marker_red);
         marker = cloneMarker(cur_marker);
         // addToDB(marker);
-
+        
         displayMarker(cur_marker);
         map.setCenter(locPosition);
       }
@@ -108,7 +112,9 @@ function ProfileMap() {
               console.log("temp = ", temp);
               if (temp && temp != null) {
                 store_name = snapshot.docs[0].data().storeName;
-                resolve(snapshot.docs[0].data().storeName);
+                ad_web = snapshot.docs[0].data().adWeb;
+                store_type = snapshot.docs[0].data().storeType;
+                resolve( tmp.data());
               }
             } else {
               reject(new Error("errrrr"));
@@ -179,6 +185,8 @@ function ProfileMap() {
         lat: lat,
         lng: lng,
         storeName: store_name,
+        adWeb: ad_web,
+        storeType: store_type, 
       });
 
     }
