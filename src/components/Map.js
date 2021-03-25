@@ -79,6 +79,7 @@ function Map() {
           let lat = data.lat;
           let lng = data.lng;
           let pos = new kakao.maps.LatLng(lat, lng);
+
           let msg = data.storeName+'<br>'+data.storeType+'<br>'+'<a href='+data.adWeb+'>' +"123"+'</a> ';
           setIwMsg(msg);
          // console.log ("update/markers = ", markers);
@@ -123,10 +124,14 @@ function Map() {
     function updateMarker(target_marker, pos, msg){
       if (target_marker && target_marker != null){
         target_marker.setPosition(pos);
-        if(iws[target_marker.id]){
-          iws[target_marker.id].setContent(iwMsg); 
-        }else{
 
+        // console.log("update/target_marker = ", target_marker);
+        // console.log("update/iws[target] = ", iws[target_marker]);
+        if(iws[target_marker]){
+          console.log("content? ", iws[target_marker].getContent());
+          iws[target_marker].setContent(msg);
+        } else{
+          
         }
       }
       
@@ -140,11 +145,7 @@ function Map() {
         content: iwContent,
         removable: iwRemoveable,
       });
-      iws[marker.id]= iw; 
-      
-      
-      
-
+      iws[marker]= iw;
 
       kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, iw));
       kakao.maps.event.addListener(map, 'click', makeOutListener(iw));
