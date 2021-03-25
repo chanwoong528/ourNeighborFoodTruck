@@ -76,16 +76,6 @@ function Map() {
         querySnapshot.forEach((doc) => {
           let data = doc.data();
           let lat = data.lat;
-<<<<<<< HEAD
-          let lng = doc.data().lng;
-          let pos = new kakao.maps.LatLng(lat,lng);
-          let msg = doc.data().storeName + '<br>' + "content";
-          let new_marker = createMarker(pos, msg);
-          console.log(doc.id, " => ", data);
-         
-          displayMarker(new_marker);
-         
-=======
           let lng = data.lng;
           let pos = new kakao.maps.LatLng(lat, lng);
           let msg = data.storeName + '<br>' + "content";
@@ -100,7 +90,6 @@ function Map() {
             markers[doc.id] = new_marker;
             displayMarker(new_marker);
           }
->>>>>>> dev/map
         });
         
       });
