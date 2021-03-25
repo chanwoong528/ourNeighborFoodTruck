@@ -17,8 +17,8 @@ function ProfileMap() {
   //   }));
 
   //  })
-  // }
 
+  
   useEffect(() => {
     const container = document.getElementById("pfMap");
     const options = {
@@ -39,13 +39,13 @@ function ProfileMap() {
         navigator.geolocation.getCurrentPosition(function (position) {
           var lat = position.coords.latitude, // 위도
             lng = position.coords.longitude; // 경도
-  
+
           var locPosition = new kakao.maps.LatLng(lat, lng);
           var message = '<div style="padding:5px;">현재 위치</div>';
           cur_marker = createMarker(locPosition, message, marker_red);
           marker = cloneMarker(cur_marker);
           // addToDB(marker);
-  
+
           displayMarker(cur_marker);
           map.setCenter(locPosition);
           // console.log("msg = " + message);
@@ -56,19 +56,16 @@ function ProfileMap() {
         cur_marker = createMarker(locPosition, message, marker_red);
         marker = cloneMarker(cur_marker);
         // addToDB(marker);
-  
+        
         displayMarker(cur_marker);
         map.setCenter(locPosition);
       }
       // marker = createMarker(locPosition, "트럭 위치");
-  
+
       checkMarkersDB();
     }).catch((err) => {
       console.log("error: ", err);
     });
-   
-
-    
 
     // on click
     kakao.maps.event.addListener(map, "click", (mouseEvent) => {
@@ -100,24 +97,26 @@ function ProfileMap() {
       }
     });
 
-    function init(){
-      return new Promise((resolve,reject) => {
+    function init() {
+      return new Promise((resolve, reject) => {
         userId = authService.currentUser.uid;
         dbService.collection("stores").where("userId", "==", userId)
           .onSnapshot((snapshot) => {
-            let temp = snapshot.docs[0].data().storeName;
-            
-            console.log ("temp = ", temp);
-            if (temp && temp != null){
-              resolve(snapshot.docs[0].data().storeName);
+            let tmp = snapshot.docs[0];
+            if (tmp) {
+              let temp = snapshot.docs[0].data().storeName;
+              console.log("temp = ", temp);
+              if (temp && temp != null) {
+                resolve(snapshot.docs[0].data().storeName);
+              }
             } else {
-              reject (new Error("errrrr"));
+              reject(new Error("errrrr"));
             }
-            
+
             // console.log ("temp111 ", temp);
           });
       });
-      
+
       // setStoreName(temp);
       // console.log("temp = ", temp);
     }
@@ -138,18 +137,18 @@ function ProfileMap() {
       }
     }
 
-    function createMarker(position, message, image){
+    function createMarker(position, message, image) {
       let marker = new kakao.maps.Marker({
         // map: map,
         //image: markerImage,
         position: position,
       });
 
-      setInfoWindow(marker,message);
+      setInfoWindow(marker, message);
 
-      if (image){
+      if (image) {
         let markerImage = new kakao.maps.MarkerImage(
-          image, new kakao.maps.Size(35,35), new kakao.maps.Point(13,34));
+          image, new kakao.maps.Size(35, 35), new kakao.maps.Point(13, 34));
         marker.setImage(markerImage);
       }
 
@@ -173,7 +172,7 @@ function ProfileMap() {
       let lat = marker.getPosition().getLat();
       let lng = marker.getPosition().getLng();
       let uid = authService.currentUser.uid;
-      
+
       let markersRef = await dbService.collection("markers");
       await markersRef.doc(uid).set({
         lat: lat,
@@ -192,7 +191,7 @@ function ProfileMap() {
       await docRef.get().then((doc) => {
         // console.log("cached doc data: ", doc.data());
         ll = new kakao.maps.LatLng(doc.data().lat, doc.data().lng);
-        
+
       }).catch((error) => {
         console.log("error getting doc: ", error);
       });
