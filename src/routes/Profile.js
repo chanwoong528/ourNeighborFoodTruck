@@ -39,7 +39,7 @@ function Profile(props) {
       <h1> {authService.currentUser.email}'s Profile</h1>
 
       <div className="profile-map-container">
-        <ProfileMap />
+        <ProfileMap hasStore = { stores.length===0}/>
       </div>
 
       {stores.length === 0 ? (
@@ -120,6 +120,7 @@ function StoreAddModal(props) {
                 setStoreName(e.target.value);
               }}
               placeholder="상호명"
+              required pattern=".*\S+.*" title="This field is required"
             />
           </div>
           <div className="store-add-input">

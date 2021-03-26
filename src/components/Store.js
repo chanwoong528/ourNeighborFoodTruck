@@ -10,7 +10,7 @@ function Store(props) {
   const [menuAddModal, setMenuAddModal] = useState(false);
   const [editStore, setEditStore] = useState(false);
   const DeleteStore = async () => {
-    const ok = window.confirm("Are you sure you want to delete this store?");
+    const ok = window.confirm("점포를 지울까요?");
     if (ok) {
       await dbService.doc(`stores/${props.store.id}`).delete();
       await dbService
@@ -188,6 +188,7 @@ function MenuAddModal(props) {
                 setMenuName(e.target.value);
               }}
               placeholder="메뉴이름"
+              required pattern=".*\S+.*" title="This field is required"
             />
           </div>
           <div className="menu-add-input">
