@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { propTypes } from "react-bootstrap/esm/Image";
+
 
 import { dbService, authService } from "../fbase";
 import marker_red from "../img/marker_red.png";
@@ -292,7 +292,7 @@ function ProfileMap(props) {
     <div
       className="profile-map"
       id="pfMap"
-      style={{ width: "90%", height: "100%" }}
+      style={{ width: "100%", height: "100%" }}
     ></div>
   );
 }

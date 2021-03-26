@@ -3,7 +3,7 @@
   flex-direction: column;
   text-align: center;
 
-  height: 100vh;
+  height: 85vh;
   
   background-color: white;
 }
@@ -18,9 +18,10 @@
 .front-btn button {
   background-color: cornsilk;
   border-radius: 25px;
-  width: 100px;
+  width: 200px;
   height: 50px;
   cursor: pointer;
+  margin-top: 10px;
 }
 .front-btn button:hover{
 background-color: white;

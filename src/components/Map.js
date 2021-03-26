@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect} from "react";
 import { dbService, authService } from "../fbase";
 import marker_red from "../img/marker_red.png";
 
 const { kakao } = window;
 
 function Map() {
-  const [iwMsg, setIwMsg] = useState("");
+  
   useEffect(() => {
   
     const container = document.getElementById("myMap");
@@ -80,8 +80,8 @@ function Map() {
           let lng = data.lng;
           let pos = new kakao.maps.LatLng(lat, lng);
 
-          let msg = "<h5>"+data.storeName+"</h5>"+"<h6>"+data.storeType+"</h6>"+'<a href='+data.adWeb+'>' +"123"+'</a>';
-          setIwMsg(msg);
+          let msg = '<h5>'+data.storeName+'</h5><h6>'+data.storeType+'</h6><a href='+data.adWeb+'> 가게 SNS</a>';
+         
          // console.log ("update/markers = ", markers);
          // console.log ("update/doc.id = ", doc.id);
          // console.log ("update/markers[uid] = ", markers[doc.id]);
@@ -162,9 +162,9 @@ function Map() {
       if (msg) marker.map.setCenter(marker.getPosition());
     }
 
-    function removeMarkerByStoreName(storeName) {
+    // function removeMarkerByStoreName(storeName) {
 
-    }
+    // }
 
     function makeOverListener(map, marker, infowindow) {
       return function () {

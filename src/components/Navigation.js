@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { authService } from "../fbase";
 import { Navbar, Nav } from "react-bootstrap";
 
+import "../css/navigation.css"
 
 function Navigation(props) {
   const history = useHistory();
@@ -11,7 +12,7 @@ function Navigation(props) {
     history.push("/front");
   };
   return (
-    <Navbar bg="light" variant="light">
+    <Navbar className="navbar" variant="light">
       <Navbar.Brand href="/">우리동네</Navbar.Brand>
       {props.isLoggedIn ? (
         <Nav className="mr-auto">

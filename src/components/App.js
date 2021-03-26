@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import AppRouter from "./Routes";
 import { authService } from "../fbase";
 
+import Footer from "./Footer";
 function App() {
   const [init, setInit] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -25,6 +26,7 @@ function App() {
         <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} /> 
         : "waiting for firebase..."
       }
+    <Footer/>
     </>
   );
 }

@@ -20,7 +20,7 @@ function Front(props) {
       <div className="front-btn">
         {props.isLoggedIn ? (
           <Link to="/edit">
-            <button>{authService.currentUser.email} </button>
+            <button>{authService.currentUser.displayName} </button>
           </Link>
         ) : (
           <Link to="/auth">

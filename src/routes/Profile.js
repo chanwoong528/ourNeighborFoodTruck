@@ -36,7 +36,7 @@ function Profile(props) {
 
   return (
     <div className="profile-main">
-      <h1> {authService.currentUser.email}'s Profile</h1>
+      <h1> {authService.currentUser.displayName}'s Profile</h1>
 
       <div className="profile-map-container">
         <ProfileMap hasStore = { stores.length === 0 }/>
@@ -44,7 +44,7 @@ function Profile(props) {
       </div>
 
       {stores.length === 0 ? (
-        <button
+        <button className="btn btn-primary"
           onClick={() => {
             setStoreAddModal(true);
           }}
@@ -109,9 +109,10 @@ function StoreAddModal(props) {
       centered
     >
       <form onSubmit={onSubmitStore}>
+        <div className ="store-add-modal">
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            점포 추가
+           점포 추가
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -144,12 +145,13 @@ function StoreAddModal(props) {
         </Modal.Body>
         <Modal.Footer>
           <div className="store-add-input">
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" className="btn btn-primary">
               점포 등록
             </button>
           </div>
-          <Button onClick={props.onHide}>Close</Button>
+          <Button className="btn btn-secondary" onClick={props.onHide}>Close</Button>
         </Modal.Footer>
+        </div>
       </form>
     </Modal>
   );

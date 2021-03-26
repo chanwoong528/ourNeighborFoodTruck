@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-
+import { Modal, Button } from "react-bootstrap";
 import { dbService } from "../fbase";
+
+import "../css/menu.css";
 // Create db and edit each category
 //  menu in DB has 3 Field:
 //  {
@@ -24,31 +26,42 @@ function Menu(props) {
     <div className="menu-main">
       {props.isStore ? (
         <>
-          <h2>Menu</h2>
-          <h4>{props.menu.menuName}</h4>
-          <h4>{props.menu.price}</h4>
-          <h4>{props.menu.detail}</h4>
+          <div>
+            <span> {props.menu.menuName}</span>
+            <span> {props.menu.price}</span>
+            <span> {props.menu.detail}</span>
+          </div>
           <button
-            onClick={() => {
-              DeleteMenu();
-            }}
-          >
-            메뉴 제거
-          </button>
-          <button
+            className="btn btn-primary-menu"
             onClick={() => {
               setEditMenu(!editMenu);
             }}
           >
             메뉴 수정
           </button>
+
+          <button
+            className="btn btn-primary-menu-del"
+            onClick={() => {
+              DeleteMenu();
+            }}
+          >
+            메뉴 제거
+          </button>
+
           {editMenu && (
             <EditMenuModal
               menuName={props.menu.menuName}
               price={props.menu.price}
               detail={props.menu.detail}
               menuId={props.menu.id}
-              setEditMenu ={setEditMenu}
+              setEditMenu={setEditMenu}
+              show={() => {
+                setEditMenu(true);
+              }}
+              onHide={() => {
+                setEditMenu(false);
+              }}
             />
           )}
         </>
@@ -74,32 +87,60 @@ function EditMenuModal(props) {
     props.setEditMenu(false);
   }
   return (
-    <form onSubmit={onSubmitEdit}>
-      <input
-        type="text"
-        onChange={(e) => {
-          setEditMenuName(e.target.value);
-        }}
-        value={editMenuName}
-        placeholder="메뉴이름수정"
-      />
-      <input
-        onChange={(e) => {
-          setEditPrice(e.target.value);
-        }}
-        value={editPrice}
-        placeholder="가격 수정"
-      />
-      <input
-        onChange={(e) => {
-          setEditDetail(e.target.value);
-        }}
-        value={editDetail}
-        placeholder="메뉴 설명 수정"
-      />
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <form onSubmit={onSubmitEdit}>
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            <h4>메뉴 수정</h4>
+            <h6>수정하고싶은 정보 적어주세요</h6>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="store-add-input">
+            <input
+              type="text"
+              onChange={(e) => {
+                setEditMenuName(e.target.value);
+              }}
+              value={editMenuName}
+              placeholder="메뉴이름수정"
+            />
+          </div>
+          <div className="store-add-input">
+            <input
+              onChange={(e) => {
+                setEditPrice(e.target.value);
+              }}
+              value={editPrice}
+              placeholder="가격 수정"
+            />
+          </div>
+          <div className="store-add-input">
+            <input
+              onChange={(e) => {
+                setEditDetail(e.target.value);
+              }}
+              value={editDetail}
+              placeholder="메뉴 설명 수정"
+            />
+          </div>
+        </Modal.Body>
 
-      <button type="submit"> 정보 수정 </button>
-    </form>
+        <Modal.Footer>
+          <button className="btn btn-primary" type="submit">
+            정보 수정
+          </button>
+          <Button className="btn btn-secondary" onClick={props.onHide}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </form>
+    </Modal>
   );
 }
 
