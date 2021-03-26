@@ -40,6 +40,7 @@ function Profile(props) {
 
       <div className="profile-map-container">
         <ProfileMap hasStore = { stores.length === 0 }/>
+
       </div>
 
       {stores.length === 0 ? (
@@ -120,6 +121,7 @@ function StoreAddModal(props) {
                 setStoreName(e.target.value);
               }}
               placeholder="상호명"
+              required pattern=".*\S+.*" title="This field is required"
             />
           </div>
           <div className="store-add-input">

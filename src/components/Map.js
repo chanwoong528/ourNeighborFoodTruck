@@ -80,7 +80,7 @@ function Map() {
           let lng = data.lng;
           let pos = new kakao.maps.LatLng(lat, lng);
 
-          let msg = data.storeName+'<br>'+data.storeType+'<br>'+'<a href='+data.adWeb+'>' +"123"+'</a>';
+          let msg = "<h5>"+data.storeName+"</h5>"+"<h6>"+data.storeType+"</h6>"+'<a href='+data.adWeb+'>' +"123"+'</a>';
           setIwMsg(msg);
          // console.log ("update/markers = ", markers);
          // console.log ("update/doc.id = ", doc.id);
