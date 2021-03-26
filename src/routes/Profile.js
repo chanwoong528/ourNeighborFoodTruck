@@ -39,7 +39,8 @@ function Profile(props) {
       <h1> {authService.currentUser.email}'s Profile</h1>
 
       <div className="profile-map-container">
-        <ProfileMap hasStore = { stores.length===0}/>
+        <ProfileMap hasStore = { stores.length === 0 }/>
+
       </div>
 
       {stores.length === 0 ? (

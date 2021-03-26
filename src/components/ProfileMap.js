@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
+import { propTypes } from "react-bootstrap/esm/Image";
 
 import { dbService, authService } from "../fbase";
 import marker_red from "../img/marker_red.png";
 
 const { kakao } = window;
 
-function ProfileMap() {
+function ProfileMap(props) {
   //  const checkMarker = async ()=>{
   //   let data; 
   //   data = await dbService.collection("markers").where("userId", "==", authService.currentUser.uid).onSnapshot((snapshot) => {
@@ -39,15 +40,15 @@ function ProfileMap() {
     init().then((data) => {
       console.log("data.storeName =", data.storeName, "data.adWeb =", data.adWeb);
 
-      getGeolocation();
-      
+      getGeolocation(true);
+
 
     }).catch((err) => {
       console.log("error: ", err);
     });
 
     // console.log("marker.getPosition(): ", marker.getPosition());
-    
+
 
     // checkMarkersDB(marker);
 
@@ -62,7 +63,7 @@ function ProfileMap() {
           // if new pos isn't equal to original pos
           removeMarker(marker);
           changeMarkerPos(marker, pos);
-          addMarkerPosToDB(marker);
+          addMarkerToDB(marker);
           displayMarker(marker, "트럭 위치");
         }
       } else {
@@ -86,6 +87,7 @@ function ProfileMap() {
                 resolve(tmp.data());
               }
             } else {
+              getGeolocation(false);
               reject(new Error("errrrr"));
             }
 
@@ -97,7 +99,7 @@ function ProfileMap() {
       // console.log("temp = ", temp);
     }
 
-    function getGeolocation() {
+    function getGeolocation(bool) {
       if (navigator.geolocation) {
         // GeoLocation을 이용해서 접속 위치를 얻어옵니다
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -115,7 +117,7 @@ function ProfileMap() {
           displayMarker(cur_marker);
           map.setCenter(locPosition);
           // console.log("msg = " + message);
-          checkMarkersDB(marker);
+          if (bool) checkMarkersDB(marker);
         });
 
       } else {
@@ -127,12 +129,12 @@ function ProfileMap() {
         console.log(cur_marker ? "else O" : "else X");
         displayMarker(cur_marker);
         map.setCenter(locPosition);
-        checkMarkersDB(marker);
+        if (bool) checkMarkersDB(marker);
       }
     }
 
     function checkMarkersDB(target_marker) {
-      let latLng = new Promise ((resolve, reject) => {
+      let latLng = new Promise((resolve, reject) => {
         resolve(getMarkerPosFromDB(userId));
       });
       latLng.then((ll) => {
@@ -144,10 +146,10 @@ function ProfileMap() {
           // checkMarker(); 
           console.log("NO");
           target_marker = cloneMarker(cur_marker);
-          addMarkerPosToDB(target_marker);
+          addMarkerToDB(target_marker);
         }
       });
-      
+
     }
 
     function createMarker(position, message, image) {
@@ -181,13 +183,14 @@ function ProfileMap() {
       return new_marker;
     }
 
-    async function addMarkerPosToDB(marker) {
+    async function addMarkerToDB(marker) {
+      if (!props.hasStore) { return; }
       let lat = marker.getPosition().getLat();
       let lng = marker.getPosition().getLng();
       let uid = authService.currentUser.uid;
 
       let markersRef = await dbService.collection("markers");
-      await markersRef.doc(uid).set({
+      markersRef.doc(uid).set({
         lat: lat,
         lng: lng,
         storeName: store_name,
@@ -210,8 +213,11 @@ function ProfileMap() {
         let docRef = dbService.collection("markers").doc(uid);
         let ll = null;
         docRef.get().then((doc) => {
-          ll = new kakao.maps.LatLng(doc.data().lat, doc.data().lng);
-          resolve(ll);
+          if (!doc.data() || doc.data() == null) resolve(null);
+          else {
+            ll = new kakao.maps.LatLng(doc.data().lat, doc.data().lng);
+            resolve(ll);
+          }
         }).catch((error) => {
           console.log("error getting doc: ", error);
           reject(new Error(error));
