@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { dbService } from "../fbase";
 // Create db and edit each category
@@ -12,6 +12,8 @@ import { dbService } from "../fbase";
 
 //  }
 function Menu(props) {
+  const [editMenu, setEditMenu] = useState(false);
+
   const DeleteMenu = async () => {
     const ok = window.confirm("Are you sure you want to delete this menu?");
     if (ok) {
@@ -19,7 +21,7 @@ function Menu(props) {
     }
   };
   return (
-    <div className ="menu-main">
+    <div className="menu-main">
       {props.isStore ? (
         <>
           <h2>Menu</h2>
@@ -33,9 +35,72 @@ function Menu(props) {
           >
             메뉴 제거
           </button>
+          <button
+            onClick={() => {
+              setEditMenu(!editMenu);
+            }}
+          >
+            메뉴 수정
+          </button>
+          {editMenu && (
+            <EditMenuModal
+              menuName={props.menu.menuName}
+              price={props.menu.price}
+              detail={props.menu.detail}
+              menuId={props.menu.id}
+              setEditMenu ={setEditMenu}
+            />
+          )}
         </>
       ) : null}
     </div>
   );
 }
+
+function EditMenuModal(props) {
+  const [editMenuName, setEditMenuName] = useState(props.menuName);
+  const [editPrice, setEditPrice] = useState(props.price);
+  const [editDetail, setEditDetail] = useState(props.detail);
+
+  async function onSubmitEdit(e) {
+    e.preventDefault();
+
+    console.log(editMenuName, props.menuName);
+    await dbService.doc(`menus/${props.menuId}`).update({
+      menuName: editMenuName,
+      price: editPrice,
+      detail: editDetail,
+    });
+    props.setEditMenu(false);
+  }
+  return (
+    <form onSubmit={onSubmitEdit}>
+      <input
+        type="text"
+        onChange={(e) => {
+          setEditMenuName(e.target.value);
+        }}
+        value={editMenuName}
+        placeholder="메뉴이름수정"
+      />
+      <input
+        onChange={(e) => {
+          setEditPrice(e.target.value);
+        }}
+        value={editPrice}
+        placeholder="가격 수정"
+      />
+      <input
+        onChange={(e) => {
+          setEditDetail(e.target.value);
+        }}
+        value={editDetail}
+        placeholder="메뉴 설명 수정"
+      />
+
+      <button type="submit"> 정보 수정 </button>
+    </form>
+  );
+}
+
 export default Menu;

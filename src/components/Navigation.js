@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { authService } from "../fbase";
 import { Navbar, Nav } from "react-bootstrap";
 
