@@ -1,39 +1,42 @@
 .btn-primary-menu {
-    color: #212529;
-    background-color: rgb(243, 234, 205);;
-    border-color: rgb(243, 234, 205);
-   display: inline-block;
-  }
-  
-  .btn-primary-menu:hover {
-    color: #212529;
-    background-color: white;
-    border-color:black;
-    
-  }
-  .btn-primary-menu-del{
-    color: #212529;
-    background-color: rgb(243, 234, 205);;
-    border-color: rgb(243, 234, 205);
-  }
-  .btn-primary-menu-del:hover{
-    color: #212529;
-    background-color: rgb(252, 164, 164);
-    border-color:black;
-  }
-  .scroll-profile-menu {
-    width: 0; /* Remove scrollbar space */
-    /* Optional: just make scrollbar invisible */
-    max-height: 120px;
-    min-height: 120px;
-    overflow-y: auto;
-    cursor: pointer;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-    
-  }
- 
-  .scroll-profile-menu::-webkit-scrollbar {
-    display: none; /*chrome*/
-  }
-  
+  color: black;
+  background-color: rgb(243, 234, 205);
+  border-color: rgb(243, 234, 205);
+  display: inline-block;
+  visibility: visible;
+}
+
+.btn-primary-menu:hover {
+  color: black;
+  background-color: white;
+  border-color: black;
+}
+.btn-primary-menu-del {
+  color: black;
+  background-color: rgb(243, 234, 205);
+  border-color: rgb(243, 234, 205);
+}
+.btn-primary-menu-del:hover {
+  color: black;
+  background-color: rgb(252, 164, 164);
+  border-color: black;
+}
+.scroll-profile-menu {
+  width: 0; /* Remove scrollbar space */
+  /* Optional: just make scrollbar invisible */
+  max-height: 120px;
+  min-height: 120px;
+  overflow-y: auto;
+  cursor: pointer;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.scroll-profile-menu:hover {
+  color: black;
+  background-color: rgb(255, 247, 220);
+  visibility: visible;
+}
+
+.scroll-profile-menu::-webkit-scrollbar {
+  display: none; /*chrome*/
+}

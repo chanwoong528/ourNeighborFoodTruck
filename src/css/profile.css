@@ -47,17 +47,18 @@ display: inline-block;
 }
 
 .btn-primary:hover {
-  
+  color: black;
   background-color: white;
   border-color:black;
   
 }
 .btn-primary-del{
-  color: #212529;
+ 
   background-color: rgb(243, 234, 205);;
   border-color: rgb(243, 234, 205);
 }
 .btn-primary-del:hover{
+
   color: #212529;
   background-color: rgb(252, 164, 164);
   border-color:black;
