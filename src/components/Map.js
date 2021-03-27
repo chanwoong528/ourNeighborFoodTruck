@@ -44,7 +44,7 @@ function Map() {
   
       loadMarkersFromDB();
     }).catch((err) => {
-      console.log("ERRRR");
+      console.log("ERRRR", err);
     });
 
     
@@ -58,12 +58,12 @@ function Map() {
 
     function init() {
       return new Promise((resolve, reject) => {
-        userId = authService.currentUser.uid;
-        if (userId){
+        if (authService.currentUser) {
+          userId = authService.currentUser.uid;
           resolve(userId);
         }
         else {
-          reject(new Error ("userId doesn't exist"));
+          resolve(null);
         }
       });
     }
