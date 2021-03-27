@@ -1,0 +1,43 @@
+.auth-main {
+  display: flex;
+  flex-direction: column;
+
+  text-align: center;
+}
+.auth-main input {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  height: 40px;
+  margin: 0 auto;
+  border-radius: 25px;
+  text-align: center;
+  margin-top: 10px;
+}
+.auth-main button[type="submit"] {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 100px;
+  height: 50px;
+  border-radius: 25px;
+  text-decoration: none;
+  padding:auto;
+  cursor: pointer;
+  
+}
+.auth-main button[type="submit"]:hover{
+
+  background-color: rgb(255, 246, 122);
+}
+.auth-btn-SNS button{
+    width: 100px;
+    height: 50px;
+    border-radius: 25px;
+    cursor: pointer;
+}
+.auth-btn-SNS button:hover{
+
+    background-color: rgb(255, 246, 122);
+
+}
+
