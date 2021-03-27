@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Card } from "react-bootstrap";
 import { dbService } from "../fbase";
 
 import "../css/menu.css";
@@ -26,28 +26,34 @@ function Menu(props) {
     <div className="menu-main">
       {props.isStore ? (
         <>
-          <div>
-            <span> {props.menu.menuName}</span>
-            <span> {props.menu.price}</span>
-            <span> {props.menu.detail}</span>
-          </div>
-          <button
-            className="btn btn-primary-menu"
-            onClick={() => {
-              setEditMenu(!editMenu);
-            }}
+          <Card
+            className="mr-2 mt-2"
+            border="warning"
+            style={{ width: "9rem", display: "inline-block" }}
           >
-            메뉴 수정
-          </button>
+            <Card.Body>
+              <h4> {props.menu.menuName}</h4>
+              <h6> {props.menu.price}</h6>
+              <h6>{props.menu.detail} </h6>
 
-          <button
-            className="btn btn-primary-menu-del"
-            onClick={() => {
-              DeleteMenu();
-            }}
-          >
-            메뉴 제거
-          </button>
+              <button
+                className="btn btn-primary-menu"
+                onClick={() => {
+                  setEditMenu(!editMenu);
+                }}
+              >
+                메뉴 수정
+              </button>
+              <button
+                className="btn btn-primary-menu-del"
+                onClick={() => {
+                  DeleteMenu();
+                }}
+              >
+                메뉴 제거
+              </button>
+            </Card.Body>
+          </Card>
 
           {editMenu && (
             <EditMenuModal

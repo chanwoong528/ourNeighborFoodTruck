@@ -9,6 +9,7 @@ import Home from "../routes/Home";
 import Profile from "../routes/Profile";
 import Front from "../routes/Front";
 import Navigation from "./Navigation";
+import StoreDetail from "../routes/StoreDetail";
 // login -> 점주 -> auth-> profile
 // login x -> 일반유저 -> home(지도 내위치 기반 가까운 푸드트럭)
 //로그인-> can Access Profile
@@ -20,11 +21,13 @@ const AppRouter = (props) => {
      
       <Switch>
         <Route exact path="/">
-          <Front isLoggedIn={props.isLoggedIn}></Front>
+          <Front isLoggedIn={props.isLoggedIn}/>
         </Route>
         <Route exact path="/home">
           <Home />
         </Route>
+        <Route exact path ="/store/:id"children={ <StoreDetail/>} />
+        
         {props.isLoggedIn ? (
           <>
             <Route exact path={"/profile"| "/auth"}>
@@ -39,6 +42,7 @@ const AppRouter = (props) => {
             </Route>
           </>
         )}
+         
       </Switch>
     </Router>
   );

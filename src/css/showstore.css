@@ -1,0 +1,13 @@
+.display-store {
+  background: #141a13 !important;
+  border: 10px outset rgb(248, 142, 20);
+  color: white;
+  justify-content: center;
+  
+}
+.display-menu {
+  background: #141a13 !important;
+  border-style: inset;
+  border-color:  rgb(248, 142, 20) ;
+  margin-right: 10px;
+}

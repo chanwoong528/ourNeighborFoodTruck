@@ -44,13 +44,15 @@ function Profile(props) {
       </div>
 
       {stores.length === 0 ? (
-        <button className="btn btn-primary"
+       <div className ="text-center mt-2">
+       <button className="btn btn-primary"
           onClick={() => {
             setStoreAddModal(true);
           }}
         >
           점포 추가
         </button>
+        </div>
       ) : null}
 
       {storeAddModal ? (

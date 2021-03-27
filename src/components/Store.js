@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { authService, dbService } from "../fbase";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Card } from "react-bootstrap";
 
 import Menu from "./Menu";
 import "../css/profile.css";
@@ -10,6 +10,7 @@ function Store(props) {
 
   const [menuAddModal, setMenuAddModal] = useState(false);
   const [editStore, setEditStore] = useState(false);
+
   const DeleteStore = async () => {
     const ok = window.confirm("점포를 지울까요?");
     if (ok) {
@@ -30,92 +31,103 @@ function Store(props) {
   };
 
   useEffect(() => {
-    dbService.collection("menus").where("storeId", "==", props.store.id).onSnapshot((snapshot) => {
-      const menuArray = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setMenus(menuArray);
-    });
+    dbService
+      .collection("menus")
+      .where("storeId", "==", props.store.id)
+      .onSnapshot((snapshot) => {
+        const menuArray = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setMenus(menuArray);
+      });
   }, [props.store.id]);
 
   return (
-    <div className="store-main">
-      {props.isOwner ? (
-        <>
-          <h4>{props.store.storeName}</h4>
-          <h5>{props.store.storeType}</h5>
-          <h5>
-            <a href={props.store.adWeb}>더보기</a>
-          </h5>
+    <Card className ="text-center" 
+    border="warning"
+    style={{ width: "95%", display: "inline-block", margin:"auto " }}>
+      <Card.Body>
+        <div className="store-main">
+          {props.isOwner ? (
+            <>
+              <h4>{props.store.storeName}</h4>
+              <h5>{props.store.storeType}</h5>
+              <h5>
+                <a href={props.store.adWeb}>더보기</a>
+              </h5>
 
-          <button
-            className="btn btn-primary"
-            onClick={() => {
-              setEditStore(!editStore);
-            }}
-          >
-            정보 수정
-          </button>
-          {editStore && (
-            <EditStoreModal
-              storeName={props.store.storeName}
-              storeType={props.store.storeType}
-              adWeb={props.store.adWeb}
-              storeId={props.store.id}
-              setEditStore={setEditStore}
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  setEditStore(!editStore);
+                }}
+              >
+                정보 수정
+              </button>
+              {editStore && (
+                <EditStoreModal
+                  storeName={props.store.storeName}
+                  storeType={props.store.storeType}
+                  adWeb={props.store.adWeb}
+                  storeId={props.store.id}
+                  setEditStore={setEditStore}
+                  show={() => {
+                    setEditStore(true);
+                  }}
+                  onHide={() => {
+                    setEditStore(false);
+                  }}
+                />
+              )}
+
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  setMenuAddModal(!menuAddModal);
+                }}
+              >
+                메뉴 추가
+              </button>
+
+              <button
+                className="btn btn-primary-del "
+                onClick={() => {
+                  DeleteStore();
+                }}
+              >
+                점포 제거
+              </button>
+              {menus.length === 0 ? null : <h4>Menu</h4>}
+
+              {menus.map((menu) => (
+                <div className="menu-display">
+                  <Menu
+                    menuId={menu.id}
+                    menu={menu}
+                    store={props.store}
+                    isStore={menu.storeId === props.store.id}
+                  ></Menu>
+                </div>
+              ))}
+            </>
+          ) : null}
+
+          {menuAddModal ? (
+            <MenuAddModal
+              store={props.store}
+              userObj={props.userObj}
               show={() => {
-                setEditStore(true);
+                setMenuAddModal(true);
               }}
               onHide={() => {
-                setEditStore(false);
+                setMenuAddModal(false);
               }}
             />
-          )}
-         
-          <button
-           className="btn btn-primary"
-            onClick={() => {
-              setMenuAddModal(!menuAddModal);
-            }}
-          >
-            메뉴 추가
-          </button>
-
-          <button
-           className="btn btn-primary-del "
-            onClick={() => {
-              DeleteStore();
-            }}
-          >
-            점포 제거
-          </button>
-          { menus.length === 0 ? null:<h4>Menu</h4>}
-          
-          {menus.map((menu) => (
-            <Menu
-              menuId={menu.id}
-              menu={menu}
-              store={props.store}
-              isStore={menu.storeId === props.store.id}
-            ></Menu>
-          ))}
-        </>
-      ) : null}
-
-      {menuAddModal ? (
-        <MenuAddModal
-          store={props.store}
-          userObj={props.userObj}
-          show={() => {
-            setMenuAddModal(true);
-          }}
-          onHide={() => {
-            setMenuAddModal(false);
-          }}
-        />
-      ) : null}
-    </div>
+          ) : null}
+        </div>
+      </Card.Body>
+    </Card>
   );
 }
 function EditStoreModal(props) {
@@ -149,39 +161,38 @@ function EditStoreModal(props) {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-      <div className="store-add-input">
-          <input 
-            type="text"
-            onChange={(e) => {
-              setEditStoreName(e.target.value);
-            }}
-            value={editStoreName}
-            placeholder="점포이름수정"
-          />
+          <div className="store-add-input">
+            <input
+              type="text"
+              onChange={(e) => {
+                setEditStoreName(e.target.value);
+              }}
+              value={editStoreName}
+              placeholder="점포이름수정"
+            />
           </div>
           <div className="store-add-input">
-          <input 
-            onChange={(e) => {
-              setEditStoreType(e.target.value);
-            }}
-            value={editStoreType}
-            placeholder="점포타입수정"
-          />
+            <input
+              onChange={(e) => {
+                setEditStoreType(e.target.value);
+              }}
+              value={editStoreType}
+              placeholder="점포타입수정"
+            />
           </div>
           <div className="store-add-input">
-          <input 
-            onChange={(e) => {
-              setEditAdWeb(e.target.value);
-            }}
-            value={editAdWeb}
-            placeholder="인스타수정"
-          />
+            <input
+              onChange={(e) => {
+                setEditAdWeb(e.target.value);
+              }}
+              value={editAdWeb}
+              placeholder="인스타수정"
+            />
           </div>
         </Modal.Body>
 
         <Modal.Footer>
           <button className="btn btn-primary" type="submit">
-            
             정보 수정
           </button>
           <Button className="btn btn-secondary" onClick={props.onHide}>
@@ -207,7 +218,7 @@ function MenuAddModal(props) {
         storeId: props.store.id,
       });
       alert("menu created");
-      props.onHide(); 
+      props.onHide();
     } catch (error) {
       alert(error);
     }
