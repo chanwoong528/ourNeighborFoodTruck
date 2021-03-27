@@ -25,11 +25,11 @@ function MenuDetail(props) {
       <div>menudetail</div>
       {menus.map((menu) => (
         <>
-          <Card className="display-menu mr-2 mt-2" border="warning" style={{ width: "10rem", display:"inline-block" }}>
+          <Card className="display-menu mr-2 mt-2 scroll" border="warning" style={{ width: "12em", display:"inline-block" }}>
             <Card.Body>
-              <h4>{menu.menuName} </h4>
-              <h4>{menu.price} </h4>
-              <h4>{menu.detail} </h4>
+              <h5 style ={{fontSize:"1em"}}>{menu.menuName} </h5>
+              <h5 style ={{fontSize:"0.8em"}}>{menu.price} </h5>
+              <h5 style ={{fontSize:"0.7em"}}>{menu.detail} </h5>
             </Card.Body>
           </Card>
           

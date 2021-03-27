@@ -35,15 +35,16 @@ function StoreDetail() {
 
           <Card className ="display-store text-center" style={{ width: "90%",margin:"auto " }}>
             <Card.Body>
-              <Card.Title> Store Detail</Card.Title>
+              <Card.Title> {store.storeName} </Card.Title>
               <Card.Subtitle className="mb-2 text-muted">
                 <h6>{store.storeType}</h6>
               </Card.Subtitle>
               <Card.Text>
-                <h4>{store.storeName} </h4>
-                <a href={store.adWeb}> {store.adWeb} </a>
+                
+               <h6> <a href={store.adWeb}> {store.storeName}' SNS </a></h6>
               </Card.Text>
-              {<span><MenuDetail storeId={store.id} /></span>}
+              {
+                <MenuDetail storeId={store.id} />}
 
             </Card.Body>
             

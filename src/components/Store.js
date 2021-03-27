@@ -56,7 +56,9 @@ function Store(props) {
               <h5>
                 <a href={props.store.adWeb}>더보기</a>
               </h5>
-
+              <h5>
+                 <a href={'/store/'+props.store.userId}>메뉴판 미리보기</a>
+              </h5>
               <button
                 className="btn btn-primary"
                 onClick={() => {

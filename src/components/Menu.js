@@ -15,6 +15,7 @@ import "../css/menu.css";
 //  }
 function Menu(props) {
   const [editMenu, setEditMenu] = useState(false);
+  const [menuDes, setMenuDes] = useState(true);
 
   const DeleteMenu = async () => {
     const ok = window.confirm("Are you sure you want to delete this menu?");
@@ -26,34 +27,50 @@ function Menu(props) {
     <div className="menu-main">
       {props.isStore ? (
         <>
-          <Card
-            className="mr-2 mt-2"
-            border="warning"
-            style={{ width: "9rem", display: "inline-block" }}
-          >
-            <Card.Body>
-              <h4> {props.menu.menuName}</h4>
-              <h6> {props.menu.price}</h6>
-              <h6>{props.menu.detail} </h6>
-
-              <button
-                className="btn btn-primary-menu"
-                onClick={() => {
-                  setEditMenu(!editMenu);
-                }}
-              >
-                메뉴 수정
-              </button>
-              <button
-                className="btn btn-primary-menu-del"
-                onClick={() => {
-                  DeleteMenu();
-                }}
-              >
-                메뉴 제거
-              </button>
-            </Card.Body>
-          </Card>
+          {menuDes ? (
+            <Card
+              onClick={() => {
+                setMenuDes(false);
+              }}
+              className="mr-2 mt-2 scroll-profile-menu"
+              border="warning"
+              style={{ width: "12rem", display: "inline-block" }}
+            >
+              <Card.Body>
+                <h4> {props.menu.menuName}</h4>
+                <h6> {props.menu.price}</h6>
+                <h6>{props.menu.detail} </h6>
+              </Card.Body>
+            </Card>
+          ) : (
+            <Card
+              onClick={() => {
+                setMenuDes(true);
+              }}
+              className="mr-2 mt-2 scroll-profile-menu"
+              border="warning"
+              style={{ width: "12rem", display: "inline-block" }}
+            >
+              <Card.Body>
+                <button
+                  className="btn btn-primary-menu"
+                  onClick={() => {
+                    setEditMenu(!editMenu);
+                  }}
+                >
+                  메뉴 수정
+                </button>
+                <button
+                  className="btn btn-primary-menu-del"
+                  onClick={() => {
+                    DeleteMenu();
+                  }}
+                >
+                  메뉴 제거
+                </button>
+              </Card.Body>
+            </Card>
+          )}
 
           {editMenu && (
             <EditMenuModal
