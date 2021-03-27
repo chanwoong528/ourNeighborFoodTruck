@@ -53,7 +53,7 @@ function Menu(props) {
             >
               <Card.Body>
                 <button
-                  className="btn btn-primary-menu"
+                  className="btn btn-primary-menu mb-2"
                   onClick={() => {
                     setEditMenu(!editMenu);
                   }}
