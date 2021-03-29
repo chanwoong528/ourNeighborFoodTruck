@@ -18,20 +18,20 @@ const AppRouter = (props) => {
   return (
     <Router>
       <Navigation isLoggedIn={props.isLoggedIn} />
-     
+
       <Switch>
         <Route exact path="/">
-          <Front isLoggedIn={props.isLoggedIn}/>
+          <Front isLoggedIn={props.isLoggedIn} />
         </Route>
         <Route exact path="/home">
           <Home />
         </Route>
-        <Route exact path ="/store/:id"children={ <StoreDetail/>} />
-        
+        <Route exact path="/store/:id" children={<StoreDetail />} />
+
         {props.isLoggedIn ? (
           <>
-            <Route exact path={"/profile"| "/auth"}>
-            
+            <Route exact path={"/profile" | "/auth"}>
+
               <Profile userObj={props.userObj} />
             </Route>
           </>
@@ -42,7 +42,9 @@ const AppRouter = (props) => {
             </Route>
           </>
         )}
-         
+        <Route exact path="*">
+          <Home />
+        </Route>
       </Switch>
     </Router>
   );
