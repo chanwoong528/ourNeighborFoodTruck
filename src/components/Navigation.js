@@ -10,7 +10,7 @@ function Navigation(props) {
   const history = useHistory();
   const LogOut = () => {
     authService.signOut();
-    history.push("/front");
+    history.push("/");
   };
   return (
     <Navbar className="navbar" variant="light">
@@ -25,7 +25,7 @@ function Navigation(props) {
               LogOut();
             }}
           >
-            log out{" "}
+            log out
           </Nav.Link>
         </Nav>
       ) : (

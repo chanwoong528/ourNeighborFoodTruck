@@ -30,6 +30,8 @@ addBtn.style.display = 'none';
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
+
+
 });
 addBtn.addEventListener('click', (e) => {
   // hide our user interface that shows our A2HS button
