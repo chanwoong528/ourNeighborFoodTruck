@@ -13,11 +13,11 @@ function Navigation(props) {
   };
   return (
     <Navbar className="navbar" variant="light">
-      <Navbar.Brand href="/">우리동네</Navbar.Brand>
+      <Navbar.Brand href="/ourNeighborFoodTruck/">우리동네</Navbar.Brand>
       {props.isLoggedIn ? (
         <Nav className="mr-auto">
-          <Nav.Link href="/home">Home</Nav.Link>
-          <Nav.Link href="/profile">Profile</Nav.Link>
+          <Nav.Link href="/ourNeighborFoodTruck/home">Home</Nav.Link>
+          <Nav.Link href="/ourNeighborFoodTruck/profile">Profile</Nav.Link>
           <Nav.Link
             href="/profile"
             onClick={() => {

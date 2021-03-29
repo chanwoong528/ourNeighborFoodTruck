@@ -11,12 +11,12 @@ import Front from "../routes/Front";
 import Navigation from "./Navigation";
 import StoreDetail from "../routes/StoreDetail";
 // login -> 점주 -> auth-> profile
-// login x -> 일반유저 -> home(지도 내위치 기반 가까운 푸드트럭)
+// login x -> 일반유저 -> home(지도 내위치 기반d 가까운 푸드트럭)
 //로그인-> can Access Profile
 //낫 로그인 -> can Access to auth, home Profile
 const AppRouter = (props) => {
   return (
-    <Router>
+    <Router basename = {"/ourNeighborFoodTruck"}>
       <Navigation isLoggedIn={props.isLoggedIn} />
      
       <Switch>
