@@ -1,7 +1,7 @@
 //점주 로그인
 import React from "react";
 
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { HashRouter as Router, Route, Switch } from "react-router-dom";
 
 
 import Auth from "../routes/Auth";
@@ -16,7 +16,7 @@ import StoreDetail from "../routes/StoreDetail";
 //낫 로그인 -> can Access to auth, home Profile
 const AppRouter = (props) => {
   return (
-    <Router basename = {"/ourNeighborFoodTruck"}>
+    <Router>
       <Navigation isLoggedIn={props.isLoggedIn} />
      
       <Switch>
