@@ -197,9 +197,9 @@ function EditStoreModal(props) {
           <button className="btn btn-primary" type="submit">
             정보 수정
           </button>
-          <Button className="btn btn-secondary" onClick={props.onHide}>
+          <button className="btn btn-primary" onClick={props.onHide}>
             Close
-          </Button>
+          </button>
         </Modal.Footer>
       </form>
     </Modal>
@@ -273,9 +273,9 @@ function MenuAddModal(props) {
           <button type="submit" className="btn btn-primary">
             메뉴 추가
           </button>
-          <Button className="btn btn-secondary" onClick={props.onHide}>
+          <button className="btn btn-primary" onClick={props.onHide}>
             Close
-          </Button>
+          </button>
         </Modal.Footer>
       </form>
     </Modal>

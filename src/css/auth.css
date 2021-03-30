@@ -13,6 +13,7 @@
   border-radius: 25px;
   text-align: center;
   margin-top: 10px;
+  outline:none;
 }
 
 
@@ -34,12 +35,12 @@
 
   background-color: white;
 }
-img{
+.auth-btn-SNS img{
 cursor:pointer;
 width: 300px;
 height: 70px;
 }
-img:hover{
+.auth-btn-SNS img:hover{
   background-color: rgb(255, 246, 122);
-
+border-radius: 15px;
 }

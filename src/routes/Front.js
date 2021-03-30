@@ -24,12 +24,12 @@ function Front(props) {
           </Link>
         ) : (
           <Link to="/auth">
-            <button>로그인 </button>
+            <button>오늘 장사는 여기서! </button>
           </Link>
         )}
 
         <Link to="/home">
-          <button>지도보기 </button>
+          <button>오늘 식사는 여기서!</button>
         </Link>
       </div>
     </div>
