@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 
 import { dbService, authService } from "../fbase";
 import marker_red from "../img/marker_red.png";
+
+import "../css/map.css";
 
 const { kakao } = window;
 
@@ -18,7 +20,20 @@ function ProfileMap(props) {
   //   }));
 
   //  })
+  const [inputText, setInputText] = useState("");
+  const [place, setPlace] = useState("");
 
+  const onChange = (e) => {
+    setInputText(e.target.value);
+    // console.log(inputText);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setPlace(inputText);
+    console.log(inputText);
+    setInputText("");
+  }
 
   useEffect(() => {
     const container = document.getElementById("pfMap");
@@ -27,6 +42,8 @@ function ProfileMap(props) {
       level: 7,
     };
     let map = new kakao.maps.Map(container, options);
+    var places = new kakao.maps.services.Places();
+
     let iw = null;
     let cur_marker = null;
     let marker = null;
@@ -43,6 +60,8 @@ function ProfileMap(props) {
 
       getGeolocation(true);
 
+      places.keywordSearch(place, placesSearchCB);
+      console.log ("keyword:", place);
 
     }).catch((err) => {
       console.log("error: ", err);
@@ -198,7 +217,7 @@ function ProfileMap(props) {
         storeName: store_name,
         adWeb: ad_web,
         storeType: store_type,
-        userId:uid,
+        userId: uid,
       });
 
     }
@@ -289,14 +308,42 @@ function ProfileMap(props) {
         infowindow.close();
       };
     }
-  }, []);
+
+    // ============================================
+
+    function placesSearchCB(data, status, pagination) {
+      if (status === kakao.maps.services.Status.OK) {
+        console.log("OK, ", place);
+        let bounds = new kakao.maps.LatLngBounds();
+
+        for (let i = 0; i < data.length; i++) {
+          // displayMarker(data[i]);
+          bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+        }
+
+        map.setBounds(bounds);
+      }
+    }
+  }, [place]);
 
   return (
-    <div
-      className="profile-map"
-      id="pfMap"
-      style={{ width: "100%", height: "100%" }}
-    ></div>
+    <div class="map_wrap">
+      <div
+        className="profile-map"
+        id="pfMap"
+        style={{ width: "100%", height: "95%" }}
+      ></div>
+      <div>
+        <form className="form-outline" onSubmit={handleSubmit}>
+          <input
+            placeholder="주소를 입력해주세요"
+            onChange={onChange}
+            value={inputText}
+          />
+          <button type="submit">찾기</button>
+        </form>
+      </div>
+    </div>
   );
 }
 export default ProfileMap;
