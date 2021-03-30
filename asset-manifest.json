@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/ourNeighborFoodTruck/static/css/main.1661f72f.chunk.css",
-    "main.js": "/ourNeighborFoodTruck/static/js/main.97c58aa8.chunk.js",
-    "main.js.map": "/ourNeighborFoodTruck/static/js/main.97c58aa8.chunk.js.map",
-    "runtime-main.js": "/ourNeighborFoodTruck/static/js/runtime-main.0c2c4458.js",
-    "runtime-main.js.map": "/ourNeighborFoodTruck/static/js/runtime-main.0c2c4458.js.map",
-    "static/js/2.71ad8dc2.chunk.js": "/ourNeighborFoodTruck/static/js/2.71ad8dc2.chunk.js",
-    "static/js/2.71ad8dc2.chunk.js.map": "/ourNeighborFoodTruck/static/js/2.71ad8dc2.chunk.js.map",
-    "static/js/3.0fccc6d5.chunk.js": "/ourNeighborFoodTruck/static/js/3.0fccc6d5.chunk.js",
-    "static/js/3.0fccc6d5.chunk.js.map": "/ourNeighborFoodTruck/static/js/3.0fccc6d5.chunk.js.map",
+    "main.css": "/ourNeighborFoodTruck/static/css/main.b8b60d65.chunk.css",
+    "main.js": "/ourNeighborFoodTruck/static/js/main.9551ab4a.chunk.js",
+    "main.js.map": "/ourNeighborFoodTruck/static/js/main.9551ab4a.chunk.js.map",
+    "runtime-main.js": "/ourNeighborFoodTruck/static/js/runtime-main.094a5a4f.js",
+    "runtime-main.js.map": "/ourNeighborFoodTruck/static/js/runtime-main.094a5a4f.js.map",
+    "static/js/2.09560eb2.chunk.js": "/ourNeighborFoodTruck/static/js/2.09560eb2.chunk.js",
+    "static/js/2.09560eb2.chunk.js.map": "/ourNeighborFoodTruck/static/js/2.09560eb2.chunk.js.map",
+    "static/js/3.e875a1ae.chunk.js": "/ourNeighborFoodTruck/static/js/3.e875a1ae.chunk.js",
+    "static/js/3.e875a1ae.chunk.js.map": "/ourNeighborFoodTruck/static/js/3.e875a1ae.chunk.js.map",
     "index.html": "/ourNeighborFoodTruck/index.html",
     "service-worker.js": "/ourNeighborFoodTruck/service-worker.js",
     "service-worker.js.map": "/ourNeighborFoodTruck/service-worker.js.map",
-    "static/css/main.1661f72f.chunk.css.map": "/ourNeighborFoodTruck/static/css/main.1661f72f.chunk.css.map",
-    "static/js/2.71ad8dc2.chunk.js.LICENSE.txt": "/ourNeighborFoodTruck/static/js/2.71ad8dc2.chunk.js.LICENSE.txt"
+    "static/css/main.b8b60d65.chunk.css.map": "/ourNeighborFoodTruck/static/css/main.b8b60d65.chunk.css.map",
+    "static/js/2.09560eb2.chunk.js.LICENSE.txt": "/ourNeighborFoodTruck/static/js/2.09560eb2.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.0c2c4458.js",
-    "static/js/2.71ad8dc2.chunk.js",
-    "static/css/main.1661f72f.chunk.css",
-    "static/js/main.97c58aa8.chunk.js"
+    "static/js/runtime-main.094a5a4f.js",
+    "static/js/2.09560eb2.chunk.js",
+    "static/css/main.b8b60d65.chunk.css",
+    "static/js/main.9551ab4a.chunk.js"
   ]
 }
