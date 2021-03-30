@@ -25,6 +25,9 @@ outline:none;
 
 
 }
+input:focus::placeholder {
+  color: transparent;
+}
 .menu-display {
 
 display: inline-block;
@@ -33,7 +36,8 @@ display: inline-block;
 .profile-map-container {
   
   width: 95%;
-  margin: 0 auto;
+  margin: auto;
+  margin-bottom: 35px;
   height: 500px;
 }
 

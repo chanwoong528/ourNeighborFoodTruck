@@ -1,3 +1,4 @@
+  
 import React, { useState, useEffect } from "react";
 import { dbService, authService } from "../fbase";
 import marker_red from "../img/marker_red.png";
@@ -219,13 +220,14 @@ function Map(props) {
 
   return (
     <div class="map_wrap">
+      <MarkerSearch m={m} storeNames={storeNames} />
       <div
         className="home-map"
         id="myMap"
         style={{ width: "100%", height: "100%" }}
       ></div>
 
-      <MarkerSearch m={m} storeNames={storeNames} />
+      
 
     </div>
   );

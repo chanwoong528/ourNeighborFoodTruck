@@ -305,13 +305,14 @@ function ProfileMap(props) {
 
   return (
     <div class="map_wrap">
+      
+      <PlaceSearch map={m} />
       <div
         className="profile-map"
         id="pfMap"
         style={{ width: "100%", height: "95%" }}
       ></div>
       
-      <PlaceSearch map={m} />
 
     </div>
   );

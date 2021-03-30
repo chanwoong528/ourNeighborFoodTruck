@@ -1,0 +1,48 @@
+@font-face {
+  font-family: 'Bazzi';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/Bazzi.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+
+.searchbar input {
+  width: 60%;
+  height: 50px;
+  margin-bottom: 15px;
+  border-radius: 25px;
+  margin-right: 10px;
+  text-align: center;
+  font-size: 15px;
+  outline: none;
+  font-family: 'Bazzi';
+}
+input:focus::placeholder {
+  color: transparent;
+}
+.searchbar button {
+  font-family: 'Bazzi';
+  background-color: rgb(243, 234, 205);
+  border: rgb(243, 234, 205);
+  font-size: 15px;
+  border-radius: 25px;
+  height: 50px;
+  width: 100px;
+}
+.searchbar button:hover {
+  background-color: white;
+
+  border: solid 1px rgb(243, 234, 205);
+}
+
+/* <div className ="searchbar">
+<form  onSubmit={handleSubmit}>
+  <input
+    placeholder="상호명을 입력해주세요"
+    onChange={onChange}
+    value={inputText}
+  />
+  <button type="submit">찾기</button>
+</form>
+</div> */

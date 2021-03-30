@@ -47,7 +47,7 @@ function Profile(props) {
       </div>
 
       {stores.length === 0 ? (
-        <div className="text-center mt-2">
+        <div className="text-center mt-5">
           <button
             className="btn btn-primary"
             onClick={() => {

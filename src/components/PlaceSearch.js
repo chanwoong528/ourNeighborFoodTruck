@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 
+import "../css/searchbar.css"
+
 const { kakao } = window;
+
+
 
 function PlaceSearch(props) {
   //
@@ -44,16 +48,18 @@ function PlaceSearch(props) {
   }, [place]);
 
   return (
-    <div>
+    <>
       <form className="form-outline" onSubmit={handleSubmit}>
+       <div className ="searchbar">
         <input
           placeholder="주소를 입력해주세요"
           onChange={onChange}
           value={inputText}
         />
         <button type="submit">찾기</button>
+        </div>
       </form>
-    </div>
+    </>
   );
 }
 

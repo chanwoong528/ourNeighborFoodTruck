@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { authService, dbService } from "../fbase";
-import { Modal, Button, Card } from "react-bootstrap";
+import { Modal, Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import Menu from "./Menu";
 import "../css/profile.css";
@@ -44,9 +45,11 @@ function Store(props) {
   }, [props.store.id]);
 
   return (
-    <Card className ="text-center" 
-    border="warning"
-    style={{ width: "95%", display: "inline-block", margin:"auto " }}>
+    <Card
+      className="text-center"
+      border="warning"
+      style={{ width: "95%", display: "inline-block", margin: "auto " }}
+    >
       <Card.Body>
         <div className="store-main">
           {props.isOwner ? (
@@ -57,7 +60,7 @@ function Store(props) {
                 <a href={props.store.adWeb}>더보기</a>
               </h5>
               <h5>
-                 <a href={'/store/'+props.store.userId}>메뉴판 미리보기</a>
+                <Link to={"/store/" + props.store.userId}>메뉴판 미리보기</Link>
               </h5>
               <button
                 className="btn btn-primary"
