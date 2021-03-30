@@ -18,7 +18,7 @@ function Menu(props) {
   const [menuDes, setMenuDes] = useState(true);
 
   const DeleteMenu = async () => {
-    const ok = window.confirm("Are you sure you want to delete this menu?");
+    const ok = window.confirm("메뉴를 지울까요?");
     if (ok) {
       await dbService.doc(`menus/${props.menu.id}`).delete();
     }
@@ -158,9 +158,9 @@ function EditMenuModal(props) {
           <button className="btn btn-primary" type="submit">
             정보 수정
           </button>
-          <Button className="btn btn-secondary" onClick={props.onHide}>
+          <button className="btn btn-primary" onClick={props.onHide}>
             Close
-          </Button>
+          </button>
         </Modal.Footer>
       </form>
     </Modal>

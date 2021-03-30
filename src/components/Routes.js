@@ -1,7 +1,7 @@
 //점주 로그인
 import React from "react";
 
-import { HashRouter as Router, Route, Switch } from "react-router-dom";
+import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 
 
 import Auth from "../routes/Auth";
@@ -30,19 +30,21 @@ const AppRouter = (props) => {
         
         {props.isLoggedIn ? (
           <>
-            <Route exact path={"/profile"| "/auth"}>
+            <Route exact path={"/profile"|"/auth"}>
             
               <Profile userObj={props.userObj} />
             </Route>
+            
           </>
+          
         ) : (
           <>
-            <Route exact path={"/auth" | "/profile"}>
+            <Route exact path={"/auth"|"/profile" }>
               <Auth />
             </Route>
           </>
         )}
-         
+         <Redirect from ="*" to ="/" />
       </Switch>
     </Router>
   );

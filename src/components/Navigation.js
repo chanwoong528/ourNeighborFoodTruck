@@ -10,7 +10,7 @@ function Navigation(props) {
   const history = useHistory();
   const LogOut = () => {
     authService.signOut();
-    history.push("/");
+    history.push("/home");
   };
   return (
     <Navbar className="navbar" variant="light">

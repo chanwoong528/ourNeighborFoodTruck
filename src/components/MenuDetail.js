@@ -22,7 +22,7 @@ function MenuDetail(props) {
 
   return (
     <>
-      <div>menudetail</div>
+      <div>Menu 목록</div>
       {menus.map((menu) => (
         <>
           <Card className="display-menu mr-2 mt-2 scroll" border="warning" style={{ width: "12em", display:"inline-block" }}>

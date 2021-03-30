@@ -9,7 +9,7 @@ import "../css/home.css";
 function Home() {
   return (
     <div className="home-main">
-      <h1>Home</h1>
+      <h1>근처에 있는 푸드트럭</h1>
       <div className="home-map-container">
         <Map />
       </div>

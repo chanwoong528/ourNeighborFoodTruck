@@ -35,7 +35,7 @@ function StoreDetail() {
 
           <Card className ="display-store text-center" style={{ width: "90%",margin:"auto " }}>
             <Card.Body>
-              <Card.Title> {store.storeName} </Card.Title>
+              <Card.Title><h2>{store.storeName}</h2> </Card.Title>
               <Card.Subtitle className="mb-2 text-muted">
                 <h6>{store.storeType}</h6>
               </Card.Subtitle>

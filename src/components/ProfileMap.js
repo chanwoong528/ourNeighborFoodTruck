@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-
 import { dbService, authService } from "../fbase";
 import marker_red from "../img/marker_red.png";
 
@@ -10,7 +9,7 @@ const { kakao } = window;
 
 function ProfileMap(props) {
   //  const checkMarker = async ()=>{
-  //   let data; 
+  //   let data;
   //   data = await dbService.collection("markers").where("userId", "==", authService.currentUser.uid).onSnapshot((snapshot) => {
 
   //   const markerArray = snapshot.docs.map((doc) => ({
@@ -67,8 +66,8 @@ function ProfileMap(props) {
       console.log("error: ", err);
     });
 
-    // console.log("marker.getPosition(): ", marker.getPosition());
 
+    // console.log("marker.getPosition(): ", marker.getPosition());
 
     // checkMarkersDB(marker);
 
@@ -79,22 +78,31 @@ function ProfileMap(props) {
       var update = window.confirm("새 위치로 변경할까요?");
       if (update) {
         // profile의 상호명 등을 받아와서 갱신
-        if (marker !== null && pos !== marker.getPosition() && pos !== cur_marker.getPosition()) {
-          // if new pos isn't equal to original pos
-          removeMarker(marker);
-          changeMarkerPos(marker, pos);
-          addMarkerToDB(marker);
-          displayMarker(marker, "트럭 위치");
+        if (store_name !== null) {
+          if (
+            marker !== null &&
+            pos !== marker.getPosition() &&
+            pos !== cur_marker.getPosition()
+          ) {
+            // if new pos isn't equal to original pos
+            removeMarker(marker);
+            changeMarkerPos(marker, pos);
+            addMarkerToDB(marker);
+            displayMarker(marker, "트럭 위치");
+          }
+        } else {
+          alert("점포 추가 후 위치 등록이 가능해요^^ ");
         }
       } else {
-
       }
     });
 
     function init() {
       return new Promise((resolve, reject) => {
         userId = authService.currentUser.uid;
-        dbService.collection("stores").where("userId", "==", userId)
+        dbService
+          .collection("stores")
+          .where("userId", "==", userId)
           .onSnapshot((snapshot) => {
             let tmp = snapshot.docs[0];
             if (tmp) {
@@ -140,7 +148,6 @@ function ProfileMap(props) {
           // console.log("msg = " + message);
           if (bool) checkMarkersDB(marker);
         });
-
       } else {
         locPosition = new kakao.maps.LatLng(33.450701, 126.570667);
         var message = "위치 정보를 사용할수 없어요..";
@@ -164,13 +171,12 @@ function ProfileMap(props) {
           console.log("YES, ", ll);
           updateAndDisplayMarker(target_marker, ll, "트럭 위치");
         } else {
-          // checkMarker(); 
+          // checkMarker();
           console.log("NO");
           target_marker = cloneMarker(cur_marker);
           addMarkerToDB(target_marker);
         }
       });
-
     }
 
     function createMarker(position, message, image) {
@@ -184,7 +190,10 @@ function ProfileMap(props) {
 
       if (image) {
         let markerImage = new kakao.maps.MarkerImage(
-          image, new kakao.maps.Size(35, 35), new kakao.maps.Point(13, 34));
+          image,
+          new kakao.maps.Size(35, 35),
+          new kakao.maps.Point(13, 34)
+        );
         marker.setImage(markerImage);
       }
 
@@ -205,7 +214,9 @@ function ProfileMap(props) {
     }
 
     async function addMarkerToDB(marker) {
-      if (!props.hasStore) { return; }
+      if (!props.hasStore) {
+        return;
+      }
       let lat = marker.getPosition().getLat();
       let lng = marker.getPosition().getLng();
       let uid = authService.currentUser.uid;
@@ -219,7 +230,6 @@ function ProfileMap(props) {
         storeType: store_type,
         userId: uid,
       });
-
     }
 
     async function getMarkerPosFromDB(uid) {
@@ -234,16 +244,19 @@ function ProfileMap(props) {
       return new Promise(function (resolve, reject) {
         let docRef = dbService.collection("markers").doc(uid);
         let ll = null;
-        docRef.get().then((doc) => {
-          if (!doc.data() || doc.data() == null) resolve(null);
-          else {
-            ll = new kakao.maps.LatLng(doc.data().lat, doc.data().lng);
-            resolve(ll);
-          }
-        }).catch((error) => {
-          console.log("error getting doc: ", error);
-          reject(new Error(error));
-        });
+        docRef
+          .get()
+          .then((doc) => {
+            if (!doc.data() || doc.data() == null) resolve(null);
+            else {
+              ll = new kakao.maps.LatLng(doc.data().lat, doc.data().lng);
+              resolve(ll);
+            }
+          })
+          .catch((error) => {
+            console.log("error getting doc: ", error);
+            reject(new Error(error));
+          });
       });
     }
 
@@ -253,7 +266,6 @@ function ProfileMap(props) {
       //   return;
       // }
       if (pos instanceof kakao.maps.LatLng) {
-
         target_marker.setPosition(pos);
       } else {
         return;
@@ -274,7 +286,7 @@ function ProfileMap(props) {
       );
       kakao.maps.event.addListener(map, "click", makeOutListener(iw));
     }
-    function removeInfoWindow(marker, msg) { }
+    function removeInfoWindow(marker, msg) {}
 
     function displayMarker(target_marker, msg) {
       // var imageSrc ="../img/personIcon.png" ; // 마커이미지의 주소입니다
@@ -293,7 +305,9 @@ function ProfileMap(props) {
     }
 
     function removeMarker(target_marker) {
-      if (!target_marker || target_marker == null) { return; }
+      if (!target_marker || target_marker == null) {
+        return;
+      }
       target_marker.setMap(null);
     }
 
