@@ -40,4 +40,11 @@
     background-color: rgb(255, 246, 122);
 
 }
+img{
+cursor:pointer;
 
+}
+img:hover{
+background-color: black;
+
+}

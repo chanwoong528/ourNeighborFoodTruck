@@ -3,6 +3,9 @@ import { authService, firebaseInstance } from "../fbase";
 
 import Register from "../components/Register";
 import "../css/auth.css";
+
+import google_login from "../img/login_google.png";
+
 //점주 로그인
 
 function Auth() {
@@ -25,12 +28,16 @@ function Auth() {
 
   const onSubmitLogin = async (e) => {
     e.preventDefault();
-
-    await authService.signInWithEmailAndPassword(email, pw);
+    try {
+      await authService.signInWithEmailAndPassword(email, pw);
+      alert("login sucessful");
+    } catch (error) {
+      alert(error);
+    }
   };
   return (
     <div className="auth-main">
-      <h1>Auth</h1>
+      <h1>로그인</h1>
       <form className="input-form" onSubmit={onSubmitLogin}>
         <input
           type="email"
@@ -46,44 +53,50 @@ function Auth() {
           }}
           placeholder="비밀번호 입력해주세요"
         />
-        
-        <button className="btn-login" type="submit"> 로그인 </button>
+        <div className="auth-btn-SNS">
+          <button className="btn-login" type="submit">
+            로그인
+          </button>
+
+          <button
+            className="auth-btn-SNS"
+            onClick={() => {
+              setRegisterModal(!registerModal);
+            }}
+          >
+            회원가입
+          </button>
+        </div>
       </form>
+
       <div className="auth-btn-SNS">
-        <button className="btn-google" name="google" onClick={onSocialLogin}>
-          구글
-        </button>
-        <button
+        <img
+          className="btn-google"
+          src={google_login}
+          name="google"
+          onClick={onSocialLogin}
+        />
+
+        {/* <button
           className="btn-facebook"
           name="facebook"
           onClick={onSocialLogin}
         >
           페이스북
         </button>
-        <button
-          className="btn-facebook"
-          name="twitter"
-          onClick={onSocialLogin}
-        >
+        <button className="btn-facebook" name="twitter" onClick={onSocialLogin}>
           트위터
-        </button>
-        <button
-          onClick={() => {
-            setRegisterModal(!registerModal);
-          }}
-        >
-          회원가입
-        </button>
+        </button> */}
       </div>
+
       {registerModal ? (
         <Register
           show={() => setRegisterModal(true)}
           onHide={() => {
             setRegisterModal(false);
           }}
-        >
-          {" "}
-        </Register>
+          setRegisterModal={setRegisterModal}
+        ></Register>
       ) : null}
     </div>
   );

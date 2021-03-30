@@ -9,7 +9,12 @@ function Register(props) {
   const [pw, setPw] = useState("");
 
   const onSubmitCreateUser = async (e) => {
-    await authService.createUserWithEmailAndPassword(email, pw);
+    try {
+      await authService.createUserWithEmailAndPassword(email, pw);
+      alert("회원등록 완료"); 
+    } catch (err) {
+      alert(err);
+    }
   };
 
   return (
