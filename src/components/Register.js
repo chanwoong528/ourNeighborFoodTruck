@@ -29,6 +29,7 @@ function Register(props) {
           <Modal.Title id="contained-modal-title-vcenter">회원가입</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+        <div className="store-add-input">
           <input
             type="email"
             onChange={(e) => {
@@ -36,6 +37,8 @@ function Register(props) {
             }}
             placeholder="이메일을 입력해주세요"
           />
+          </div>
+          <div className="store-add-input">
           <input
             type="password"
             onChange={(e) => {
@@ -43,6 +46,7 @@ function Register(props) {
             }}
             placeholder="비밀번호 입력해주세요"
           />
+          </div>
         </Modal.Body>
         <Modal.Footer>
           <button type="submit" class="btn btn-primary">

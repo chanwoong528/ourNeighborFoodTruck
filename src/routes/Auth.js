@@ -5,7 +5,7 @@ import Register from "../components/Register";
 import "../css/auth.css";
 
 import google_login from "../img/login_google.png";
-
+import facebook_login from "../img/login_facebook.png";
 //점주 로그인
 
 function Auth() {
@@ -53,22 +53,24 @@ function Auth() {
           }}
           placeholder="비밀번호 입력해주세요"
         />
-        <div className="auth-btn-SNS">
-          <button className="btn-login" type="submit">
-            로그인
-          </button>
 
-          <button
-            className="auth-btn-SNS"
-            onClick={() => {
-              setRegisterModal(!registerModal);
-            }}
-          >
-            회원가입
-          </button>
-        </div>
+        <button className="btn-login" type="submit" name="login">
+          로그인
+        </button>
+     
+      
+        <button
+          type= "button"
+          className="auth-btn-SNS"
+          onClick={() => {
+            setRegisterModal(!registerModal);
+          }}
+        >
+          회원가입
+        </button>
+        
+      
       </form>
-
       <div className="auth-btn-SNS">
         <img
           className="btn-google"
@@ -76,18 +78,18 @@ function Auth() {
           name="google"
           onClick={onSocialLogin}
         />
-
-        {/* <button
-          className="btn-facebook"
+      </div>
+      <div className="auth-btn-SNS">
+        <img
+          className="btn-google"
+          src={facebook_login}
           name="facebook"
           onClick={onSocialLogin}
-        >
-          페이스북
-        </button>
-        <button className="btn-facebook" name="twitter" onClick={onSocialLogin}>
-          트위터
-        </button> */}
+        />
       </div>
+      {/* <button className="btn-facebook" name="twitter" onClick={onSocialLogin}>
+          트위터
+        </button>  */}
 
       {registerModal ? (
         <Register
