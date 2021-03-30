@@ -3,26 +3,15 @@ import { dbService, authService } from "../fbase";
 import marker_red from "../img/marker_red.png";
 
 // import SearchPlace from "./SearchPlaces";
+import MarkerSearch from "./MarkerSearch";
 import "../css/map.css";
 
 const { kakao } = window;
 
 function Map(props) {
-  const [inputText, setInputText] = useState("");
-  const [place, setPlace] = useState("");
   const [count, setCount] = useState(0);
-
-  const onChange = (e) => {
-    setInputText(e.target.value);
-    // console.log(inputText);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setPlace(inputText);
-    console.log(inputText);
-    setInputText("");
-  }
+  const [m, setM] = useState(null);
+  const [storeNames, setStoreNames] = useState({});
 
   useEffect(() => {
     setCount(count + 1);
@@ -33,11 +22,12 @@ function Map(props) {
       center: new kakao.maps.LatLng(33.450701, 126.570667), //여기를 바꿔야함 내 장소로
       level: 4,
     };
-
     var map = new kakao.maps.Map(container, options);
+    setM(map);
 
     var markers = {};
     var store_names = {};
+
     var iws = {};
     var iw = null;
     var cur_marker = null;
@@ -123,17 +113,19 @@ function Map(props) {
               console.log("update/markers[uid] = ", markers[doc.id]);
               updateMarker(markers[doc.id], pos, msg);
               store_names[data.storeName] = pos;
+              setStoreNames({...store_names});
             } else {
               let new_marker = createMarker(pos, msg);
               markers[doc.id] = new_marker;
               store_names[data.storeName] = pos;
+              setStoreNames({...store_names});
               displayMarker(new_marker);
             }
-            
+
           });
-          markerSearch();
+          // markerSearch();
         });
-        
+
       });
 
 
@@ -222,30 +214,7 @@ function Map(props) {
       };
     }
 
-    // ============================================
-
-    function markerSearch() {
-      if (!place || place == null || place == "") {
-        console.log("place doesn't exist");
-        return;
-      }
-      try {
-        let pos = store_names[place];
-        if (pos == undefined) { return; }
-        console.log("pos", place, pos);
-        map.setCenter(pos);
-
-      } catch (err) {
-        console.log("markerSearch():", err);
-      }
-    }
-
-
-  }, [place]);
-
-
-
-
+  }, []);
 
 
   return (
@@ -255,17 +224,8 @@ function Map(props) {
         id="myMap"
         style={{ width: "100%", height: "100%" }}
       ></div>
-      <div>
-        <form className="form-outline" onSubmit={handleSubmit}>
-          <input
-            placeholder="상호명을 입력해주세요"
-            onChange={onChange}
-            value={inputText}
-          />
-          <button type="submit">찾기</button>
-        </form>
-      </div>
 
+      <MarkerSearch m={m} storeNames={storeNames} />
 
     </div>
   );
