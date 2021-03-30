@@ -42,10 +42,12 @@ const AppRouter = (props) => {
             <Route exact path={"/auth"|"/profile" }>
               <Auth />
             </Route>
+            
           </>
         )}
-         <Redirect from ="*" to ="/" />
+        
       </Switch>
+     
     </Router>
   );
 };

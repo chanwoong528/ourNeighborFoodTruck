@@ -87,9 +87,9 @@ function Auth() {
           onClick={onSocialLogin}
         />
       </div>
-      {/* <button className="btn-facebook" name="twitter" onClick={onSocialLogin}>
+       {/* <button className="btn-facebook" name="twitter" onClick={onSocialLogin}>
           트위터
-        </button>  */}
+        </button>   */}
 
       {registerModal ? (
         <Register

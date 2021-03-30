@@ -9,8 +9,9 @@ import "../css/navigation.css"
 function Navigation(props) {
   const history = useHistory();
   const LogOut = () => {
-    authService.signOut();
     history.push("/home");
+    authService.signOut(); 
+    
   };
   return (
     <Navbar className="navbar" variant="light">
@@ -19,8 +20,7 @@ function Navigation(props) {
         <Nav className="mr-auto">
           <Nav.Link as={Link} to="/home">Home</Nav.Link>
           <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
-          <Nav.Link as={Link}
-            to="/profile"
+          <Nav.Link as={Link} to="/home"
             onClick={() => {
               LogOut();
             }}
