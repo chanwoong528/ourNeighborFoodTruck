@@ -10,6 +10,7 @@ const { kakao } = window;
 function Map(props) {
   const [inputText, setInputText] = useState("");
   const [place, setPlace] = useState("");
+  const [count, setCount] = useState(0);
 
   const onChange = (e) => {
     setInputText(e.target.value);
@@ -24,6 +25,8 @@ function Map(props) {
   }
 
   useEffect(() => {
+    setCount(count + 1);
+    console.log("COUNT:", count);
 
     const container = document.getElementById("myMap");
     const options = {
@@ -50,7 +53,7 @@ function Map(props) {
           var message = '<div style="padding:5px;">내 위치</div>';
           cur_marker = createMarker(locPosition, message, marker_red);
           displayMarker(cur_marker);
-          console.log('msg = ' + message);
+          // console.log('msg = ' + message);
           map.setCenter(locPosition);
         });
       }
@@ -62,8 +65,8 @@ function Map(props) {
         map.setCenter(locPosition);
       }
 
-    }).then(()=>{
       loadMarkersFromDB();
+
     }).catch((err) => {
       console.log("ERRRR", err);
     });
@@ -89,44 +92,59 @@ function Map(props) {
       });
     }
 
-    async function loadMarkersFromDB() {
+    function loadMarkersFromDB() {
       // const snapshot = await dbService.collection("markers").get();
       // return snapshot.docs.map(doc => doc.data());
+      return new Promise((resolve, reject) => {
+        dbService.collection("markers").onSnapshot((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            let data = doc.data();
+            let lat = data.lat;
+            let lng = data.lng;
+            let pos = new kakao.maps.LatLng(lat, lng);
 
+            let msg = '<h5>' + data.storeName + '</h5><h6>'
+              + data.storeType + '</h6><a href=' + data.adWeb +
+              '> 가게 SNS</a><br><a href=/ourNeighborFoodTruck/#/store/' + data.userId + '>메뉴보기</a>';
 
-      await dbService.collection("markers").onSnapshot((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          let data = doc.data();
-          let lat = data.lat;
-          let lng = data.lng;
-          let pos = new kakao.maps.LatLng(lat, lng);
+            // console.log ("update/markers = ", markers);
+            // console.log ("update/doc.id = ", doc.id);
+            // console.log ("update/markers[uid] = ", markers[doc.id]);
 
-          let msg = '<h5>' + data.storeName + '</h5><h6>'
-            + data.storeType + '</h6><a href=' + data.adWeb +
-            '> 가게 SNS</a><br><a href=/ourNeighborFoodTruck/#/store/' + data.userId + '>메뉴보기</a>';
+            // if (markers && markers != null && markers.length != 0){
+            //   markers.map((data) => {
 
-          // console.log ("update/markers = ", markers);
-          // console.log ("update/doc.id = ", doc.id);
-          // console.log ("update/markers[uid] = ", markers[doc.id]);
-          if (markers[doc.id]) {
-            //console.log ("update/markers[uid] = ", markers[doc.id]);
-            updateMarker(markers[doc.id], pos, msg);
-            store_names[data.storeName] = pos;
-          } else {
-            let new_marker = createMarker(pos, msg);
-            markers[doc.id] = new_marker;
-            store_names[data.storeName] = pos;
-            displayMarker(new_marker);
-          }
+            //   });
+            // }
+
+            // const result = markers.filter(d => d["key"] == doc.id);
+            console.log(markers[doc.id]);
+            if (markers[doc.id]) {
+              console.log("update/markers[uid] = ", markers[doc.id]);
+              updateMarker(markers[doc.id], pos, msg);
+              store_names[data.storeName] = pos;
+            } else {
+              let new_marker = createMarker(pos, msg);
+              markers[doc.id] = new_marker;
+              store_names[data.storeName] = pos;
+              displayMarker(new_marker);
+            }
+            
+          });
           markerSearch();
         });
-
+        
       });
+
+
     }
 
-    // async function loadMarkersFromDB() {
-
-    // }
+    function addToMarkerSet(data) {
+      // const markers = [...markerSet];
+      // markers[markers.length] = data;
+      // setMarkerSet(markers);
+      markers.push(data);
+    }
 
     function createMarker(position, message, image) {
       let marker = new kakao.maps.Marker({
@@ -205,19 +223,23 @@ function Map(props) {
     }
 
     // ============================================
-    
-    function markerSearch () {
+
+    function markerSearch() {
+      if (!place || place == null || place == "") {
+        console.log("place doesn't exist");
+        return;
+      }
       try {
-        if (!place || place == null || place === ""){
-          return;
-        }
         let pos = store_names[place];
+        if (pos == undefined) { return; }
+        console.log("pos", place, pos);
         map.setCenter(pos);
+
       } catch (err) {
-        console.log ("markerSearch():", err);
+        console.log("markerSearch():", err);
       }
     }
-    
+
 
   }, [place]);
 
