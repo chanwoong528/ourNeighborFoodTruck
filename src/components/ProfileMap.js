@@ -3,36 +3,13 @@ import React, { useState, useEffect } from "react";
 import { dbService, authService } from "../fbase";
 import marker_red from "../img/marker_red.png";
 
+import PlaceSearch from "./PlaceSearch";
 import "../css/map.css";
 
 const { kakao } = window;
 
 function ProfileMap(props) {
-  //  const checkMarker = async ()=>{
-  //   let data;
-  //   data = await dbService.collection("markers").where("userId", "==", authService.currentUser.uid).onSnapshot((snapshot) => {
-
-  //   const markerArray = snapshot.docs.map((doc) => ({
-
-  //     id: doc.id,
-  //     ...doc.data(),
-  //   }));
-
-  //  })
-  const [inputText, setInputText] = useState("");
-  const [place, setPlace] = useState("");
-
-  const onChange = (e) => {
-    setInputText(e.target.value);
-    // console.log(inputText);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setPlace(inputText);
-    console.log(inputText);
-    setInputText("");
-  }
+  const [m, setM] = useState(null);
 
   useEffect(() => {
     const container = document.getElementById("pfMap");
@@ -40,8 +17,9 @@ function ProfileMap(props) {
       center: new kakao.maps.LatLng(33.450701, 126.570667), //여기를 바꿔야함 내 장소로
       level: 7,
     };
-    let map = new kakao.maps.Map(container, options);
-    var places = new kakao.maps.services.Places();
+    var map = new kakao.maps.Map(container, options);
+    setM(map);
+    
 
     let iw = null;
     let cur_marker = null;
@@ -58,9 +36,6 @@ function ProfileMap(props) {
       console.log("data.storeName =", data.storeName, "data.adWeb =", data.adWeb, "user_id =", data.userId);
 
       getGeolocation(true);
-
-      places.keywordSearch(place, placesSearchCB);
-      console.log ("keyword:", place);
 
     }).catch((err) => {
       console.log("error: ", err);
@@ -325,20 +300,8 @@ function ProfileMap(props) {
 
     // ============================================
 
-    function placesSearchCB(data, status, pagination) {
-      if (status === kakao.maps.services.Status.OK) {
-        console.log("OK, ", place);
-        let bounds = new kakao.maps.LatLngBounds();
-
-        for (let i = 0; i < data.length; i++) {
-          // displayMarker(data[i]);
-          bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
-        }
-
-        map.setBounds(bounds);
-      }
-    }
-  }, [place]);
+   
+  }, []);
 
   return (
     <div class="map_wrap">
@@ -347,16 +310,9 @@ function ProfileMap(props) {
         id="pfMap"
         style={{ width: "100%", height: "95%" }}
       ></div>
-      <div>
-        <form className="form-outline" onSubmit={handleSubmit}>
-          <input
-            placeholder="주소를 입력해주세요"
-            onChange={onChange}
-            value={inputText}
-          />
-          <button type="submit">찾기</button>
-        </form>
-      </div>
+      
+      <PlaceSearch map={m} />
+
     </div>
   );
 }
