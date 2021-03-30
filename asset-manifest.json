@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/ourNeighborFoodTruck/static/css/main.4125517d.chunk.css",
+    "main.css": "/ourNeighborFoodTruck/static/css/main.1ceeb02a.chunk.css",
     "main.js": "/ourNeighborFoodTruck/static/js/main.14b6dc27.chunk.js",
     "main.js.map": "/ourNeighborFoodTruck/static/js/main.14b6dc27.chunk.js.map",
     "runtime-main.js": "/ourNeighborFoodTruck/static/js/runtime-main.0458f610.js",
@@ -12,13 +12,13 @@
     "index.html": "/ourNeighborFoodTruck/index.html",
     "service-worker.js": "/ourNeighborFoodTruck/service-worker.js",
     "service-worker.js.map": "/ourNeighborFoodTruck/service-worker.js.map",
-    "static/css/main.4125517d.chunk.css.map": "/ourNeighborFoodTruck/static/css/main.4125517d.chunk.css.map",
+    "static/css/main.1ceeb02a.chunk.css.map": "/ourNeighborFoodTruck/static/css/main.1ceeb02a.chunk.css.map",
     "static/js/2.608f3f41.chunk.js.LICENSE.txt": "/ourNeighborFoodTruck/static/js/2.608f3f41.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.0458f610.js",
     "static/js/2.608f3f41.chunk.js",
-    "static/css/main.4125517d.chunk.css",
+    "static/css/main.1ceeb02a.chunk.css",
     "static/js/main.14b6dc27.chunk.js"
   ]
 }
