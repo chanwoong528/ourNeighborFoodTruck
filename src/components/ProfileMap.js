@@ -36,9 +36,10 @@ function ProfileMap(props) {
     let store_name = null;
     let ad_web = null;
     let store_type = null;
+    let user_id = null;
 
     init().then((data) => {
-      console.log("data.storeName =", data.storeName, "data.adWeb =", data.adWeb);
+      console.log("data.storeName =", data.storeName, "data.adWeb =", data.adWeb, "user_id =", data.userId);
 
       getGeolocation(true);
 
@@ -84,6 +85,7 @@ function ProfileMap(props) {
                 store_name = snapshot.docs[0].data().storeName;
                 ad_web = snapshot.docs[0].data().adWeb;
                 store_type = snapshot.docs[0].data().storeType;
+                user_id = snapshot.docs[0].data().userId;
                 resolve(tmp.data());
               }
             } else {
@@ -196,6 +198,7 @@ function ProfileMap(props) {
         storeName: store_name,
         adWeb: ad_web,
         storeType: store_type,
+        userId:uid,
       });
 
     }

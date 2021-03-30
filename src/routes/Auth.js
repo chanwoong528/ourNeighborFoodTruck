@@ -61,6 +61,13 @@ function Auth() {
           페이스북
         </button>
         <button
+          className="btn-facebook"
+          name="twitter"
+          onClick={onSocialLogin}
+        >
+          트위터
+        </button>
+        <button
           onClick={() => {
             setRegisterModal(!registerModal);
           }}
