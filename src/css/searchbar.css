@@ -8,6 +8,7 @@
 
 
 .searchbar input {
+  border:black 1px solid ;
   width: 60%;
   height: 50px;
   margin-bottom: 15px;

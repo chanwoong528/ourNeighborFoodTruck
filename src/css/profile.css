@@ -16,7 +16,9 @@
 }
 
 .store-add-input input{
- width: 300px;
+border:black 1px solid ;
+
+width: 300px;
 border-radius: 25px;
 text-align: center;
 margin-bottom: 10px;
