@@ -11,9 +11,13 @@
   background-color: rgb(255, 246, 169);
   width: 100%;
   max-width: 90%;
-  min-width: 10%;
+  min-width: 90%;
   margin: auto;
-  height: inherit;
+
+}
+.front-video Card{
+  min-width: 100%;
+ 
 }
 .front-btn button {
   background-color: cornsilk;

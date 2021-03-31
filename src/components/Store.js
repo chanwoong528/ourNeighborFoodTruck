@@ -57,7 +57,7 @@ function Store(props) {
               <h4>{props.store.storeName}</h4>
               <h5>{props.store.storeType}</h5>
               <h5>
-                <a href={props.store.adWeb}>더보기</a>
+                <a href={props.store.adWeb}>SNS로 가기</a>
               </h5>
               <h5>
                 <Link to={"/store/" + props.store.userId}>메뉴판 미리보기</Link>

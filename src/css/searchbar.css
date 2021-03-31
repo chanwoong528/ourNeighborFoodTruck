@@ -28,7 +28,7 @@ input:focus::placeholder {
   border: rgb(243, 234, 205);
   font-size: 15px;
   border-radius: 25px;
-  height: 50px;
+  height: 40px;
   width: 100px;
 }
 .searchbar button:hover {
