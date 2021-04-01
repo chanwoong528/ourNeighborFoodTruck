@@ -13,11 +13,11 @@ const useWatchLocation = (options = {}) => {
   // Success handler for geolocation's `watchPosition` method
   const handleSuccess = (pos) => {
     const { latitude, longitude } = pos.coords;
-    let latLng = new kakao.maps.LatLng(latitude, longitude + Math.random());
-    console.log("latLng?", latLng);
+    let latLng = new kakao.maps.LatLng(latitude, longitude); //  + Math.random()/10 
+    // console.log("latLng?", latLng);
     if (!location || (location.getLat() != latLng.getLat()
       || location.getLng() != latLng.getLng())) {
-      console.log("setLocation called");
+      console.log("setLocation called:", latLng);
       setLocation(latLng);
     }
 
@@ -26,6 +26,7 @@ const useWatchLocation = (options = {}) => {
   // Error handler for geolocation's `watchPosition` method
   const handleError = (error) => {
     setError(error.message);
+    console.log("watcher ERROR");
   };
 
   // Clears the watch instance based on the saved watch id
@@ -45,9 +46,7 @@ const useWatchLocation = (options = {}) => {
       setError("Geolocation is not supported.");
       return;
     }
-
-
-
+    
     // Start to watch the location with the Geolocation API
     locationWatchId.current = geolocation.watchPosition(handleSuccess, handleError, options);
 

@@ -76,16 +76,24 @@ export const createInfoWindow = (isRemovable) => {
 }
 
 export const setInfoWindow = (infoWindow, marker, msg, map) => {
-  setInfoWindowListener(infoWindow, marker, map);
+  addInfoWindowListener(infoWindow, marker, map);
   setInfoWindowMsg(infoWindow, msg);
 }
 
-export const setInfoWindowListener = (infoWindow, marker, map) => {
+export const addInfoWindowListener = (infoWindow, marker, map) => {
   if (!(infoWindow instanceof kakao.maps.InfoWindow)) { return; }
   if (!(marker instanceof kakao.maps.Marker)) { return; }
   if (!(map instanceof kakao.maps.Map)) { return; }
   kakao.maps.event.addListener(marker, "click", iwOpener(map, marker, infoWindow));
   kakao.maps.event.addListener(map, "click", iwCloser(infoWindow));
+}
+
+export const removeInfoWindowListener = (infoWindow, marker, map) => {
+  if (!(infoWindow instanceof kakao.maps.InfoWindow)) { return; }
+  if (!(marker instanceof kakao.maps.Marker)) { return; }
+  if (!(map instanceof kakao.maps.Map)) { return; }
+  kakao.maps.event.removeListener(marker, "click", iwOpener(map, marker, infoWindow));
+  kakao.maps.event.removeListener(map, "click", iwCloser(infoWindow));
 }
 
 export const setInfoWindowMsg = (infoWindow, msg) => {

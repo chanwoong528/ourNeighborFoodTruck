@@ -1,5 +1,5 @@
 export const geolocationOptions = {
-  enableHighAccuracy: false,
+  enableHighAccuracy: true,
   timeout: 1000 * 10,
-  maximumAge: 0,
+  maximumAge: 1000 * 0,
 };

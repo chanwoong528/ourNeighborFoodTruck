@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import marker_red from "../img/marker_red.png";
 
 import * as kmu from "./KakaoMapUtil";
@@ -11,48 +11,34 @@ const { geolocation } = navigator;
 function GeoLocator(props) {
   const { location, cancelLocationWatch, error } = useWatchLocation(geolocationOptions);
   const [focus, setFocus] = useState (true);
+  const marker = useRef();
 
-  console.log("MAP:", props.map);
+  // console.log("MAP:", props.map);
   if (error) console.log("error??",error);
   
   useEffect(() => {
-    // setCount(count + 1);
     const map = null;//props.map;
-    const marker = kmu.createMarker(null, null, marker_red);
+    marker.current = kmu.createMarker(null, null, marker_red);
     var watchId = null;
 
     // const { longitude, latitude } = location;
     // var latLng = new kakao.maps.LatLng(latitude, longitude);
-    console.log("latLng:", location);
+    // console.log("latLng:", location);
 
     if (location instanceof kakao.maps.LatLng){
-      console.log ("working???");
-      kmu.changeMarkerPos(marker, location);
+      console.log ("setting a new marker");
+      // alert("location: " + location);
+      kmu.changeMarkerPos(marker.current, location);
       let msg = '<div style="padding:5px; align:center;">현재 위치</div>';
       
       let iw = kmu.createInfoWindow(true);
-      kmu.setInfoWindow(iw, marker, msg, props.map);
-      kmu.displayMarker(marker, props.map, focus);
+      kmu.setInfoWindow(iw, marker.current, msg, props.map);
+      kmu.displayMarker(marker.current, props.map, focus);
+    } else {
+      // alert("not watching");
+      console.log("not watching...");
+      props.map.setCenter(new kakao.maps.LatLng(33.450701, 126.570667));
     }
-    // if (geolocation) {
-      // console.log("watching...");
-      // watchId = geolocation.watchPosition(handleSuccess, handleError);
-      // kmu.changeMarkerPos(marker, location);
-      // console.log("markerPos:", location);
-      
-      // let msg = '<div style="padding:5px; align:center;">현재 위치'+ count +'</div>';
-      
-      // let iw = kmu.createInfoWindow(true);
-      // kmu.setInfoWindow(iw, marker, msg, map);
-      // kmu.displayMarker(marker, map, true);
-
-      // setWatcher();
-      // if (watchId != null) geolocation.clearWatch();
-      // getCurrentLocation();
-    // } else {
-    //   console.log("not watching...");
-    //   map.setCenter(new kakao.maps.LatLng(33.450701, 126.570667));
-    // }
 
     /**
      * @deprecated
@@ -68,9 +54,9 @@ function GeoLocator(props) {
         getGeolocation().then((data) => {
           latLng = data ? data : latLng;
 
-          kmu.changeMarkerPos(marker, latLng);
+          kmu.changeMarkerPos(marker.current, latLng);
           // console.log("map or null?", map instanceof kakao.maps.Map, map == null);
-          kmu.displayMarker(marker, map, true);
+          kmu.displayMarker(marker.current, map, true);
 
         }).catch((err) => {
           console.log("getGeolocation:", err);
@@ -108,38 +94,11 @@ function GeoLocator(props) {
       });
     }
 
-    /**
-     * Makes geolocation to watch the device's geolocation
-     *  at a certain interval, and updates the marker location on the map.
-     */
-    function setWatcher() {
-      watchId = geolocation.watchPosition(function (position) {
-        const { latitude, longitude } = position.coords;
-        let latLng = new kakao.maps.LatLng(latitude, longitude);
-        console.log("latLng:", latLng);
-
-        kmu.changeMarkerPos(marker, latLng);
-        // console.log("map or null?", map instanceof kakao.maps.Map, map == null);
-        kmu.displayMarker(marker, map, true);
-        let msg = '<div style="padding:5px; align:center;">현재 위치</div>';
-        let iw = kmu.createInfoWindow(true);
-        kmu.setInfoWindowListener(iw, marker, map);
-        kmu.setInfoWindowMsg(iw, msg);
-      }, function (err) {
-        console.log("setWatcher Error:", err);
-      });
-    };
-
-    function clearWatcher() {
-      geolocation.clearWatch(watchId);
-      console.log("watcher cleared");
-    }
-
     return () => {
-      // clearWatcher();
       setFocus(false);
-      console.log("watcher cleared");
-      marker.setMap(null);
+      marker.current.setMap(null);
+      marker.current = null;
+      console.log("--------- marker cleared --------");
     };
 
   }, [location, cancelLocationWatch]);
