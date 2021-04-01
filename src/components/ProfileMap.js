@@ -2,87 +2,79 @@ import React, { useState, useEffect } from "react";
 
 import { dbService, authService } from "../fbase";
 import marker_red from "../img/marker_red.png";
-
-import PlaceSearch from "./PlaceSearch";
 import "../css/map.css";
+
+import * as kmu from "./KakaoMapUtil";
+import PlaceSearch from "./PlaceSearch";
+import GeoLocator from "./GeoLocator";
+
 
 const { kakao } = window;
 
 function ProfileMap(props) {
-  const [m, setM] = useState(null);
+  const [map, setMap] = useState(null);
+  // const {location, cancelLocationWatch, error} = useWatchLocation();
 
   useEffect(() => {
-    const container = document.getElementById("pfMap");
-    const options = {
-      center: new kakao.maps.LatLng(33.450701, 126.570667), //여기를 바꿔야함 내 장소로
-      level: 7,
-    };
-    var map = new kakao.maps.Map(container, options);
-    setM(map);
-    
+    // setTimeout(() => {
+    //   cancelLocationWatch();
+    //   // setIsWatchForLocation(false);
+    // }, 3000);
+
+    var map = kmu.createMap(document.getElementById("pfMap"));
+    setMap(map);
 
     let iw = null;
     let cur_marker = null;
     let marker = null;
     let locPosition = null;
 
-    let userId = null;
+    let uid = null;
     let store_name = null;
     let ad_web = null;
     let store_type = null;
     let user_id = null;
 
     init().then((data) => {
-      console.log("data.storeName =", data.storeName, "data.adWeb =", data.adWeb, "user_id =", data.userId);
-
-      getGeolocation(true);
-
+      loadSavedMarkerPosFromDB();
     }).catch((err) => {
-      console.log("error: ", err);
+      console.log("init error: ", err);
     });
 
-
-    // console.log("marker.getPosition(): ", marker.getPosition());
-
-    // checkMarkersDB(marker);
-
-    // on click
     kakao.maps.event.addListener(map, "click", (mouseEvent) => {
       console.log(mouseEvent.latLng);
       var pos = mouseEvent.latLng;
       var update = window.confirm("새 위치로 변경할까요?");
       if (update) {
-        // profile의 상호명 등을 받아와서 갱신
-        if (store_name !== null) {
-          if (
-            marker !== null &&
-            pos !== marker.getPosition() &&
-            pos !== cur_marker.getPosition()
-          ) {
-            // if new pos isn't equal to original pos
-            removeMarker(marker);
-            changeMarkerPos(marker, pos);
-            addMarkerToDB(marker);
-            displayMarker(marker, "트럭 위치");
+        if (store_name != null) {
+          // has store_name
+          if (!(marker instanceof kakao.maps.Marker)) {
+            marker = kmu.createMarker();
           }
+          // marker already exists
+          kmu.changeMarkerPos(marker, pos);
+          kmu.displayMarker(marker, map, true, "트럭 위치");
+          addMarkerToDB(marker);
+
         } else {
-          alert("점포 추가 후 위치 등록이 가능해요^^ ");
+          // has no store_name
+          alert("점포 등록 후 사용 가능합니다.");
         }
       } else {
+        // don't update == don't do anything
       }
     });
 
     function init() {
       return new Promise((resolve, reject) => {
-        userId = authService.currentUser.uid;
+        uid = authService.currentUser.uid;
         dbService
           .collection("stores")
-          .where("userId", "==", userId)
+          .where("userId", "==", uid)
           .onSnapshot((snapshot) => {
             let tmp = snapshot.docs[0];
             if (tmp) {
               let temp = snapshot.docs[0].data().storeName;
-              console.log("on init(), storeName:", temp);
               if (temp && temp != null) {
                 store_name = snapshot.docs[0].data().storeName;
                 ad_web = snapshot.docs[0].data().adWeb;
@@ -91,110 +83,58 @@ function ProfileMap(props) {
                 resolve(tmp.data());
               }
             } else {
-              getGeolocation(false);
-              reject(new Error("errrrr"));
+              reject(new Error("init errrr"));
             }
-
-            // console.log ("temp111 ", temp);
           });
       });
-
-      // setStoreName(temp);
-      // console.log("temp = ", temp);
     }
 
-    function getGeolocation(bool) {
-      if (navigator.geolocation) {
-        // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-        navigator.geolocation.getCurrentPosition(function (position) {
-          // console.log("position = ", position);
-          var lat = position.coords.latitude, // 위도
-            lng = position.coords.longitude; // 경도
-
-          locPosition = new kakao.maps.LatLng(lat, lng);
-          var message = '<div style="padding:5px;">현재 위치</div>';
-          cur_marker = createMarker(locPosition, message, marker_red);
-          marker = cloneMarker(cur_marker);
-          console.log("cloneMarker() returned,", marker.getPosition());
-          // addToDB(marker);
-          console.log(cur_marker ? "gps O" : "gps X");
-          displayMarker(cur_marker);
-          map.setCenter(locPosition);
-          // console.log("msg = " + message);
-          if (bool) checkMarkersDB(marker);
-        });
-      } else {
-        locPosition = new kakao.maps.LatLng(33.450701, 126.570667);
-        var message = "위치 정보를 사용할수 없어요..";
-        cur_marker = createMarker(locPosition, message, marker_red);
-        marker = cloneMarker(cur_marker);
-        // addToDB(marker);
-        console.log(cur_marker ? "else O" : "else X");
-        displayMarker(cur_marker);
-        map.setCenter(locPosition);
-        if (bool) checkMarkersDB(marker);
-      }
-    }
-
-    function checkMarkersDB(target_marker) {
+    function loadSavedMarkerPosFromDB() {
       let latLng = new Promise((resolve, reject) => {
-        resolve(getMarkerPosFromDB(userId));
+        resolve(fetchMarkerDataFromDB(uid));
       });
       latLng.then((ll) => {
-        if (ll) {
+        if (ll instanceof kakao.maps.LatLng) {
           // if the user has a saved marker position
-          console.log("YES, ", ll);
-          updateAndDisplayMarker(target_marker, ll, "트럭 위치");
+          // console.log("saved position exists: ", ll);
+          if (!(marker instanceof kakao.maps.Marker)) {
+            marker = kmu.createMarker();
+          }
+          kmu.changeMarkerPos(marker, ll);
+          kmu.displayMarker(marker, map, true, "트럭 위치");
         } else {
-          // checkMarker();
-          console.log("NO");
-          target_marker = cloneMarker(cur_marker);
-          addMarkerToDB(target_marker);
+          // console.log("no saved position");
         }
       });
     }
 
-    function createMarker(position, message, image) {
-      let marker = new kakao.maps.Marker({
-        // map: map,
-        //image: markerImage,
-        position: position,
+    function fetchMarkerDataFromDB() {
+      return new Promise(function (resolve, reject) {
+        let docRef = dbService.collection("markers").doc(uid);
+        // let ll = null;
+        docRef
+          .get()
+          .then((doc) => {
+            if (!doc.data() || doc.data() == null) resolve(null);
+            else {
+              let ll = new kakao.maps.LatLng(doc.data().lat, doc.data().lng);
+              resolve(ll);
+            }
+          })
+          .catch((error) => {
+            console.log("error getting doc: ", error);
+            reject(new Error(error));
+          });
       });
-
-      setInfoWindow(marker, message);
-
-      if (image) {
-        let markerImage = new kakao.maps.MarkerImage(
-          image,
-          new kakao.maps.Size(35, 35),
-          new kakao.maps.Point(13, 34)
-        );
-        marker.setImage(markerImage);
-      }
-
-      // map.setCenter(position);
-      return marker;
     }
 
-    function cloneMarker(marker) {
-      var new_marker = new kakao.maps.Marker({
-        // map: null,
-        //image: markerImage,
-        position: marker ? marker.getPosition() : null,
-      });
-      removeMarker(new_marker);
-      setInfoWindow(new_marker, "트럭 위치");
-      console.log("cloneMarker() returning new marker");
-      return new_marker;
-    }
-
-    async function addMarkerToDB(marker) {
+    async function addMarkerToDB() {
       if (!props.hasStore) {
         return;
       }
       let lat = marker.getPosition().getLat();
       let lng = marker.getPosition().getLng();
-      let uid = authService.currentUser.uid;
+      // let uid = authService.currentUser.uid;
 
       let markersRef = await dbService.collection("markers");
       markersRef.doc(uid).set({
@@ -207,113 +147,18 @@ function ProfileMap(props) {
       });
     }
 
-    async function getMarkerPosFromDB(uid) {
-      let ll = await fetchMarkerDataFromDB(uid);
-      if (ll instanceof kakao.maps.LatLng) {
-        return ll;
-      }
-      return null;
-    }
-
-    function fetchMarkerDataFromDB(uid) {
-      return new Promise(function (resolve, reject) {
-        let docRef = dbService.collection("markers").doc(uid);
-        let ll = null;
-        docRef
-          .get()
-          .then((doc) => {
-            if (!doc.data() || doc.data() == null) resolve(null);
-            else {
-              ll = new kakao.maps.LatLng(doc.data().lat, doc.data().lng);
-              resolve(ll);
-            }
-          })
-          .catch((error) => {
-            console.log("error getting doc: ", error);
-            reject(new Error(error));
-          });
-      });
-    }
-
-    function changeMarkerPos(target_marker, pos) {
-      // if (!target_marker || target_marker == null) {
-      //   console.log("marker disappeared????");
-      //   return;
-      // }
-      if (pos instanceof kakao.maps.LatLng) {
-        target_marker.setPosition(pos);
-      } else {
-        return;
-      }
-    }
-
-    function setInfoWindow(marker, msg) {
-      var iwContent = msg;
-      var iwRemoveable = true;
-      iw = new kakao.maps.InfoWindow({
-        content: iwContent,
-        removable: iwRemoveable,
-      });
-      kakao.maps.event.addListener(
-        marker,
-        "click",
-        makeOverListener(map, marker, iw)
-      );
-      kakao.maps.event.addListener(map, "click", makeOutListener(iw));
-    }
-    function removeInfoWindow(marker, msg) {}
-
-    function displayMarker(target_marker, msg) {
-      // var imageSrc ="../img/personIcon.png" ; // 마커이미지의 주소입니다
-      // var imageSize = new kakao.maps.Size(64, 69); // 마커이미지의 크기입니다
-      // var imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-
-      // var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-      target_marker.setMap(map);
-      if (msg) target_marker.getMap().setCenter(target_marker.getPosition());
-    }
-
-    function updateAndDisplayMarker(marker, latLng, msg) {
-      var pos = latLng;
-      changeMarkerPos(marker, pos);
-      displayMarker(marker);
-    }
-
-    function removeMarker(target_marker) {
-      if (!target_marker || target_marker == null) {
-        return;
-      }
-      target_marker.setMap(null);
-    }
-
-    function makeOverListener(map, marker, infowindow) {
-      return function () {
-        infowindow.open(map, marker);
-      };
-    }
-
-    function makeOutListener(infowindow) {
-      return function () {
-        infowindow.close();
-      };
-    }
-
-    // ============================================
-
-   
   }, []);
 
   return (
     <div class="map_wrap">
-      
-      <PlaceSearch map={m} />
+      <PlaceSearch map={map} />
       <div
         className="profile-map"
         id="pfMap"
         style={{ width: "100%", height: "95%" }}
       ></div>
-      
 
+      {map && <GeoLocator map={map} />}
     </div>
   );
 }

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import "../css/map.css";
 import "../css/searchbar.css"
 
-const { kakao } = window;
+// const { kakao } = window;
 
 function MarkerSearch(props) {
   const [inputText, setInputText] = useState("");
@@ -34,7 +34,7 @@ function MarkerSearch(props) {
           return;
         }
         console.log("pos", place, pos);
-        props.m.setCenter(pos);
+        props.map.setCenter(pos);
       } catch (err) {
         console.log("markerSearch():", err);
       }
