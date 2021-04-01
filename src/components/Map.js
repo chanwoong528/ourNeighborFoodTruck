@@ -26,7 +26,7 @@ function Map(props) {
       center: new kakao.maps.LatLng(33.450701, 126.570667), //여기를 바꿔야함 내 장소로
       level: 4,
     };
-    var map = kmu.createMap(container, options);
+    var map = kmu.createMap(container, options, true, true);
     setMap(map);
 
     var markers = {};
@@ -103,7 +103,7 @@ function Map(props) {
         }
         console.log("original content:", iws[marker].getContent());
         if (typeof msg == typeof "") {
-          kmu.setInfoWindow(iws[marker],marker,msg,map);
+          kmu.setInfoWindow(iws[marker], marker, msg, map);
           // iws[marker].setContent(msg);
         }
       }

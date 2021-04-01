@@ -1,13 +1,20 @@
 
 const { kakao } = window;
 
-export const createMap = (container, options) => {
+export const createMap = (container, options, mapTypeCtrl, zoomCtrl) => {
   const con = container ? container : document.getElementById("map");
   const opt = options ? options : {
     center: new kakao.maps.LatLng(33.450701, 126.570667),
     level: 7,
   };
-  return new kakao.maps.Map(con, opt);
+  let map = new kakao.maps.Map(con, opt)
+  if (mapTypeCtrl === true) {
+    map.addControl(new kakao.maps.MapTypeControl(), kakao.maps.ControlPosition.TOPRIGHT);
+  }
+  if (zoomCtrl === true) {
+    map.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
+  }
+  return map;
 }
 
 export const createMarker = (position, map, imgSrc, infoWindowMsg) => {
@@ -58,7 +65,11 @@ export const displayMarker = (marker, map, boolSetCenter, infoWindowMsg) => {
  * @returns {kakao.maps.InfoWindow}
  */
 export const createInfoWindow = (isRemovable) => {
-  let iw = new kakao.maps.infoWindow({
+  // if (isRemovable !== true){
+  //   isRemovable = false;
+  // }
+  var iw = new kakao.maps.InfoWindow({
+    // content: "",
     removable: isRemovable === true ? true : false,
   });
   return iw;
@@ -70,16 +81,16 @@ export const setInfoWindow = (infoWindow, marker, msg, map) => {
 }
 
 export const setInfoWindowListener = (infoWindow, marker, map) => {
-  if (!(infoWindow instanceof kakao.maps.InfoWindow)) {return;}
-  if (!(marker instanceof kakao.maps.Marker)) {return;}
-  if (!(map instanceof kakao.maps.Map)) {return;}
+  if (!(infoWindow instanceof kakao.maps.InfoWindow)) { return; }
+  if (!(marker instanceof kakao.maps.Marker)) { return; }
+  if (!(map instanceof kakao.maps.Map)) { return; }
   kakao.maps.event.addListener(marker, "click", iwOpener(map, marker, infoWindow));
   kakao.maps.event.addListener(map, "click", iwCloser(infoWindow));
 }
 
 export const setInfoWindowMsg = (infoWindow, msg) => {
   if (infoWindow instanceof kakao.maps.InfoWindow) {
-    if (typeof msg == typeof ""){
+    if (typeof msg == typeof "") {
       infoWindow.setContent(msg);
     }
   }

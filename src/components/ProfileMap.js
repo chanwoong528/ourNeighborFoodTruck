@@ -21,7 +21,7 @@ function ProfileMap(props) {
     //   // setIsWatchForLocation(false);
     // }, 3000);
 
-    var map = kmu.createMap(document.getElementById("pfMap"));
+    var map = kmu.createMap(document.getElementById("pfMap"), false, true, true);
     setMap(map);
 
     let iw = null;
@@ -155,7 +155,7 @@ function ProfileMap(props) {
       <div
         className="profile-map"
         id="pfMap"
-        style={{ width: "100%", height: "95%" }}
+        style={{ width: "100%", height: "100%" }}
       ></div>
 
       {map && <GeoLocator map={map} />}

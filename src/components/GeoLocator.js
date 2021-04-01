@@ -2,57 +2,57 @@ import { useState, useEffect } from "react";
 import marker_red from "../img/marker_red.png";
 
 import * as kmu from "./KakaoMapUtil";
+import useWatchLocation from "./useWatchLocation";
+import {geolocationOptions} from "./geolocationOptions";
 
 const { kakao } = window;
 const { geolocation } = navigator;
 
 function GeoLocator(props) {
-  const [location, setLocation] = useState(null);
-  const [count, setCount] = useState(0);
-  console.log(count, "MAP:", props.map);
-  // console.log(count, "location:", props.location);
+  const { location, cancelLocationWatch, error } = useWatchLocation(geolocationOptions);
+  const [focus, setFocus] = useState (true);
 
-  const handleSuccess = (pos) => {
-    const { longitude, latitude } = pos.coords;
-    console.log("lat:", latitude);
-    console.log("lng:", longitude);
-    var latLng = new kakao.maps.LatLng(latitude, longitude);
-    console.log("latLng:", latLng);
-    if (location == null || (location.getLat() != latLng.getLat()
-      && location.getLng() != latLng.getLng())) {
-        setLocation(latLng);
-    }
-  }
-
-  const handleError = (err) => {
-    console.log("watch error:", err);
-  }
-
+  console.log("MAP:", props.map);
+  if (error) console.log("error??",error);
+  
   useEffect(() => {
-    setCount(count + 1);
-
-    const map = props.map;
+    // setCount(count + 1);
+    const map = null;//props.map;
     const marker = kmu.createMarker(null, null, marker_red);
     var watchId = null;
 
-    if (geolocation) {
-      console.log("watching...");
-      watchId = geolocation.watchPosition(handleSuccess, handleError);
+    // const { longitude, latitude } = location;
+    // var latLng = new kakao.maps.LatLng(latitude, longitude);
+    console.log("latLng:", location);
+
+    if (location instanceof kakao.maps.LatLng){
+      console.log ("working???");
       kmu.changeMarkerPos(marker, location);
-      console.log("markerPos:", location);
-      // console.log("map or null?", map instanceof kakao.maps.Map, map == null);
+      let msg = '<div style="padding:5px; align:center;">현재 위치</div>';
       
-      let msg = '<div style="padding:5px; align:center;">현재 위치'+ count +'</div>';
+      let iw = kmu.createInfoWindow(true);
+      kmu.setInfoWindow(iw, marker, msg, props.map);
+      kmu.displayMarker(marker, props.map, focus);
+    }
+    // if (geolocation) {
+      // console.log("watching...");
+      // watchId = geolocation.watchPosition(handleSuccess, handleError);
+      // kmu.changeMarkerPos(marker, location);
+      // console.log("markerPos:", location);
       
-      kmu.setInfoWindow(marker, msg, map);
-      kmu.displayMarker(marker, map, true);
+      // let msg = '<div style="padding:5px; align:center;">현재 위치'+ count +'</div>';
+      
+      // let iw = kmu.createInfoWindow(true);
+      // kmu.setInfoWindow(iw, marker, msg, map);
+      // kmu.displayMarker(marker, map, true);
+
       // setWatcher();
       // if (watchId != null) geolocation.clearWatch();
       // getCurrentLocation();
-    } else {
-      console.log("not watching...");
-      map.setCenter(new kakao.maps.LatLng(33.450701, 126.570667));
-    }
+    // } else {
+    //   console.log("not watching...");
+    //   map.setCenter(new kakao.maps.LatLng(33.450701, 126.570667));
+    // }
 
     /**
      * @deprecated
@@ -136,10 +136,13 @@ function GeoLocator(props) {
     }
 
     return () => {
-      clearWatcher();
+      // clearWatcher();
+      setFocus(false);
+      console.log("watcher cleared");
+      marker.setMap(null);
     };
 
-  }, [location]);
+  }, [location, cancelLocationWatch]);
 
   return null;
 }
